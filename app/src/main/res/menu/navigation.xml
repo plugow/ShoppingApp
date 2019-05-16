@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_shopping"
+        android:icon="@drawable/outline_shopping_cart_black_24"
+        android:title="@string/shopping_list" />
+
+    <item
+        android:id="@+id/navigation_archived"
+        android:icon="@drawable/outline_archive_black_24"
+        android:title="@string/archived_list" />
+
+
+</menu>
