@@ -2,25 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.plugow.shoppingapp">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-            android:name="com.plugow.shoppingapp.ShoppingApp"
+            android:name=".ShoppingApp"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".ui.ShoppingListDetailActivity">
+        </activity>
+        <activity android:name=".ui.MainActivity"/>
         <activity
-                android:name="com.plugow.shoppingapp.ui.MainActivity"></activity>
-        <activity
-                android:name="com.plugow.shoppingapp.ui.SplashActivity"
+                android:name=".ui.SplashActivity"
                 android:noHistory="true"
                 android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -28,7 +29,7 @@
                 android:name="com.raizlabs.android.dbflow.runtime.StubContentProvider"
                 android:authorities="${applicationId}"
                 android:exported="true"
-                android:grantUriPermissions="true" />
+                android:grantUriPermissions="true"/>
     </application>
 
 </manifest>

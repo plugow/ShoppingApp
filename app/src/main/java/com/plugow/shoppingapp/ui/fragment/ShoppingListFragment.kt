@@ -12,12 +12,14 @@ import androidx.lifecycle.Observer
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentShoppingListBinding
 import com.plugow.shoppingapp.event.ShoppingListEvent
+import com.plugow.shoppingapp.ui.ShoppingListDetailActivity
 import com.plugow.shoppingapp.ui.adapter.ShoppingListAdapter
 import com.plugow.shoppingapp.ui.dialog.NewListDialog
 import com.plugow.shoppingapp.viewModel.ShoppingListViewModel
 import dagger.android.support.DaggerFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.contentView
+import org.jetbrains.anko.support.v4.startActivity
 import javax.inject.Inject
 
 class ShoppingListFragment : DaggerFragment() {
@@ -48,7 +50,7 @@ class ShoppingListFragment : DaggerFragment() {
         mViewModel.loadItems()
         mViewModel.event.observe(this, Observer {
             when(it.getContentIfNotHandled()){
-                ShoppingListEvent.OnItemClick -> {}
+                ShoppingListEvent.OnItemClick -> {startActivity<ShoppingListDetailActivity>("id" to mViewModel.currentItemId)}
                 null -> {}
             }
         })

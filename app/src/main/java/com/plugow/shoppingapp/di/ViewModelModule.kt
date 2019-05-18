@@ -3,6 +3,7 @@ package com.plugow.shoppingapp.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.plugow.shoppingapp.viewModel.ArchivedListViewModel
+import com.plugow.shoppingapp.viewModel.ShoppingListDetailViewModel
 import com.plugow.shoppingapp.viewModel.ShoppingListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -40,4 +41,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ShoppingListViewModel::class)
     internal abstract fun bindShoppingListViewModel(viewModel: ShoppingListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ShoppingListDetailViewModel::class)
+    internal abstract fun bindDetailViewModel(viewModel: ShoppingListDetailViewModel): ViewModel
 }

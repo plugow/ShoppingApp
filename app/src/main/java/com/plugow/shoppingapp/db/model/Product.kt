@@ -15,6 +15,12 @@ class Product (
     @Column
     var name:String="",
 
+    @Column
+    var amount:Int = 1,
+
+    @Column
+    var isDone:Boolean = false,
+
     @ForeignKey(stubbedRelationship = true)
     var shoppingList: ShoppingList?=null
 
