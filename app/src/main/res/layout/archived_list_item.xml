@@ -18,43 +18,54 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/episode"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="@color/grey"
+                android:textSize="20sp"
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_margin"
+                android:layout_marginTop="@dimen/base_margin"
+                android:text="Title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <ProgressBar
+                android:progress="50"
+                android:progressTint="@color/grey"
+                android:progressBackgroundTint="@color/lightGrey"
+                android:indeterminate="false"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/base_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/base_margin"
+                android:layout_marginEnd="@dimen/base_margin"
+                android:id="@+id/shoppingProgress"/>
 
         <TextView
-            android:id="@+id/episode_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+                android:text="1/5"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shoppingResult"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/contextMenu"/>
 
-        <TextView
-            android:id="@+id/episode_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/episode_id"
-            app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+                android:background="@drawable/baseline_more_vert_black_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/contextMenu"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="@+id/shoppingResult"
+                app:layout_constraintBottom_toBottomOf="@+id/shoppingResult"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
