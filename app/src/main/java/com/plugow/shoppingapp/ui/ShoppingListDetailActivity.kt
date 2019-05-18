@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.ActivityShoppingListDetailBinding
 import com.plugow.shoppingapp.ui.adapter.ShoppingListDetailAdapter
+import com.plugow.shoppingapp.ui.dialog.SearchDialogFragment
 import com.plugow.shoppingapp.viewModel.ShoppingListDetailViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
@@ -25,6 +26,10 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
             viewModel = mViewModel
             list.adapter = mAdapter
             list.layoutManager = LinearLayoutManager(this@ShoppingListDetailActivity)
+            addProductButton.setOnClickListener {
+                val searchDialog = SearchDialogFragment.newInstance()
+                searchDialog.show(supportFragmentManager,"search dialog")
+            }
         }
         mViewModel.loadItems()
     }

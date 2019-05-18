@@ -12,4 +12,8 @@ enum class ProductClickType : ClickType {
     CHECK
 }
 
+enum class SearchClickType : ClickType {
+    MAIN
+}
+
 interface ClickType

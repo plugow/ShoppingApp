@@ -33,7 +33,7 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/addListButton"
+                android:id="@+id/addProductButton"
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="32dp"
                 android:layout_width="wrap_content"

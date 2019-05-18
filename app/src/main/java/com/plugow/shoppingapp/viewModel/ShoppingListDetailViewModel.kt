@@ -7,9 +7,7 @@ import com.plugow.shoppingapp.db.model.Product
 import com.plugow.shoppingapp.di.util.Event
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
-import com.plugow.shoppingapp.ui.adapter.ClickType
-import com.plugow.shoppingapp.ui.adapter.ProductClickType
-import com.plugow.shoppingapp.ui.adapter.RecyclerClickType
+import com.plugow.shoppingapp.ui.adapter.*
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
@@ -18,12 +16,8 @@ class ShoppingListDetailViewModel @Inject constructor(): ViewModel(), Refreshabl
     val event : LiveData<Event<ShoppingListEvent>>
         get() = mEvent
 
-    override fun loadItems() {
-        val list = arrayListOf(Product(name = "pierwszy"), Product(name = "drugi"))
-        items.value = list
-    }
-
     override var items: MutableLiveData<List<Product>> = MutableLiveData()
+    var searchItems: MutableLiveData<List<SearchItem>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
 
     private val disposables= CompositeDisposable()
@@ -31,6 +25,16 @@ class ShoppingListDetailViewModel @Inject constructor(): ViewModel(), Refreshabl
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
+    }
+
+    override fun loadItems() {
+        val list = arrayListOf(Product(name = "pierwszy"), Product(name = "drugi"))
+        items.value = list
+    }
+
+    fun loadSearchItems() {
+        val list = arrayListOf(SearchItem(name = "pierwszy"), SearchItem(name = "drugi"))
+        searchItems.value = list
     }
 
     fun addProduct() {
@@ -42,6 +46,7 @@ class ShoppingListDetailViewModel @Inject constructor(): ViewModel(), Refreshabl
             ProductClickType.ADD -> {}
             ProductClickType.SUBSTRACT -> {}
             ProductClickType.CHECK -> {}
+            SearchClickType.MAIN -> {}
         }
     }
 
