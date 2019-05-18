@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentShoppingListBinding
+import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.ui.adapter.ShoppingListAdapter
 import com.plugow.shoppingapp.ui.dialog.NewListDialog
 import com.plugow.shoppingapp.viewModel.ShoppingListViewModel
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_shopping_list.*
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.contentView
 import javax.inject.Inject
@@ -45,6 +46,12 @@ class ShoppingListFragment : DaggerFragment() {
             }
         }
         mViewModel.loadItems()
+        mViewModel.event.observe(this, Observer {
+            when(it.getContentIfNotHandled()){
+                ShoppingListEvent.OnItemClick -> {}
+                null -> {}
+            }
+        })
         return binding.root
     }
 
