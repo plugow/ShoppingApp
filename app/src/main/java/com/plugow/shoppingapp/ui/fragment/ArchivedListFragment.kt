@@ -11,19 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentArchivedListBinding
 import com.plugow.shoppingapp.ui.adapter.ArchivedListAdapter
-import com.plugow.shoppingapp.viewModel.ShoppingListViewModel
+import com.plugow.shoppingapp.viewModel.ArchivedListViewModel
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class ArchivedListFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var mViewModel: ShoppingListViewModel
+    private lateinit var mViewModel: ArchivedListViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(ShoppingListViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(ArchivedListViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

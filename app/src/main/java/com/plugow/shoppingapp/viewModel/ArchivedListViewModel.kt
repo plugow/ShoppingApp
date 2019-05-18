@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 class ArchivedListViewModel @Inject constructor(): ViewModel(), RefreshableList<ShoppingList>{
     override fun loadItems() {
+        val list = listOf(ShoppingList(name = "test"))
     }
 
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()

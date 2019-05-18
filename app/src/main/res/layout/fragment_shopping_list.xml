@@ -5,11 +5,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.plugow.shoppingapp.viewModel.ArchivedListViewModel"/>
+            type="com.plugow.shoppingapp.viewModel.ShoppingListViewModel"/>
         <import type="android.view.View" />
     </data>
     <FrameLayout
-        android:id="@+id/episodesLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.ShoppingListFragment">
@@ -32,6 +31,7 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/addListButton"
                 android:layout_gravity="bottom|end"
                 android:layout_marginBottom="@dimen/floating_margin_bottom"
                 android:layout_marginEnd="@dimen/base_margin"

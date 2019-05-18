@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.plugow.shoppingapp.viewModel.ShoppingListViewModel"/>
+            type="com.plugow.shoppingapp.viewModel.ArchivedListViewModel"/>
     </data>
     <FrameLayout
         android:id="@+id/charactersLayout"

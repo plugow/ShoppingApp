@@ -1,7 +1,6 @@
 package com.plugow.shoppingapp.di.util
 
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.ui.adapter.BaseAdapter
 

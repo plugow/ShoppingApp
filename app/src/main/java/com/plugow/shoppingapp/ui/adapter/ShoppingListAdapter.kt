@@ -1,8 +1,10 @@
 package com.plugow.shoppingapp.ui.adapter
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.ShoppingList
 import kotlinx.android.synthetic.main.shopping_list_item.*
@@ -22,6 +24,11 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
     class ShoppingListViewHolder(containerView: View) : BaseViewHolder<ShoppingList>(containerView) {
         override fun bind(item: ShoppingList) {
             title.text = item.name
+            contextMenu.setOnClickListener {
+                val popup = PopupMenu(containerView.context, contextMenu, Gravity.END)
+                popup.menuInflater.inflate(R.menu.shopping_list_menu, popup.menu)
+                popup.show()
+            }
         }
     }
 

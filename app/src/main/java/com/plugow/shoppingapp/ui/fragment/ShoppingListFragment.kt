@@ -11,19 +11,24 @@ import android.view.ViewGroup
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentShoppingListBinding
 import com.plugow.shoppingapp.ui.adapter.ShoppingListAdapter
-import com.plugow.shoppingapp.viewModel.ArchivedListViewModel
+import com.plugow.shoppingapp.ui.dialog.NewListDialog
+import com.plugow.shoppingapp.viewModel.ShoppingListViewModel
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_shopping_list.*
+import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.contentView
 import javax.inject.Inject
 
 class ShoppingListFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory:ViewModelProvider.Factory
-    private lateinit var mViewModel: ArchivedListViewModel
+    private lateinit var mViewModel: ShoppingListViewModel
+    var newListDialog:NewListDialog?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(ArchivedListViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(ShoppingListViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 
@@ -35,10 +40,25 @@ class ShoppingListFragment : DaggerFragment() {
             viewModel = mViewModel
             list.adapter = mAdapter
             list.layoutManager = LinearLayoutManager(context)
+            addListButton.setOnClickListener {
+                addNewList()
+            }
         }
-
-        val layout = binding.episodesLayout
+        mViewModel.loadItems()
         return binding.root
+    }
+
+    fun addNewList(){
+        newListDialog= activity?.contentView?.let {
+            NewListDialog(AnkoContext.create(activity!!, it))
+        }
+        newListDialog?.okButton?.setOnClickListener {
+            mViewModel.addList()
+            newListDialog?.pDialog?.dismiss()
+        }
+        newListDialog?.cancelButton?.setOnClickListener {
+            newListDialog?.pDialog?.dismiss()
+        }
     }
 
 

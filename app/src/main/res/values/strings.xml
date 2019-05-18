@@ -15,4 +15,9 @@
     <string name="character">Character:</string>
     <string name="shopping_list">Shopping Lists</string>
     <string name="archived_list">Archived Lists</string>
+    <string name="remove_list">Remove list</string>
+    <string name="archive_list">Archive list</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="new_list">New List</string>
 </resources>
