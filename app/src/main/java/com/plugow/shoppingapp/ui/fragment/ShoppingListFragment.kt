@@ -65,7 +65,7 @@ class ShoppingListFragment : DaggerFragment() {
             NewListDialog(AnkoContext.create(activity!!, it))
         }
         newListDialog?.okButton?.setOnClickListener {
-            mViewModel.addList()
+            mViewModel.addList(newListDialog?.codeEditText?.text.toString())
             newListDialog?.pDialog?.dismiss()
         }
         newListDialog?.cancelButton?.setOnClickListener {

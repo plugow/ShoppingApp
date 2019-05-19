@@ -1,8 +1,10 @@
 package com.plugow.shoppingapp.viewModel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.ShoppingList
 import com.plugow.shoppingapp.di.util.Event
@@ -19,7 +21,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class ShoppingListViewModel @Inject constructor(val repo: AppRepo): ViewModel(), RefreshableList<ShoppingList> {
+class ShoppingListViewModel @Inject constructor(val repo: AppRepo, val ctx:Context): ViewModel(), RefreshableList<ShoppingList> {
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var currentItemId = 0
@@ -31,10 +33,12 @@ class ShoppingListViewModel @Inject constructor(val repo: AppRepo): ViewModel(),
 
 
     override fun loadItems() {
-        val d = Calendar.getInstance()
-        d.set(2018, 7, 20)
-        val list = arrayListOf(ShoppingList(id = 1, name = "test", createdAt = Date()), ShoppingList(id = 2, name = "test 2", createdAt = d.time))
-        items.value = list
+        repo.getShoppingList()
+            .subscribeBy(
+                onSuccess = {
+                    items.value = it
+                }
+            ).addTo(disposables)
     }
 
     override fun onCleared() {
@@ -42,8 +46,13 @@ class ShoppingListViewModel @Inject constructor(val repo: AppRepo): ViewModel(),
         disposables.clear()
     }
 
-    fun addList() {
-
+    fun addList(text: String) {
+        val name = if (text=="") ctx.getString(R.string.new_list) else text
+        val newList = ShoppingList(name = name)
+        newList.save()
+        val temp = items.value?.toMutableList()
+        temp?.add(0,newList)
+        items.value = temp
     }
 
     override fun onRecyclerClick(type: ClickType, pos:Int){

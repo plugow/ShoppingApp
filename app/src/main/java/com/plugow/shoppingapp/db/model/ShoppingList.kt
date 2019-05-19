@@ -22,6 +22,9 @@ class ShoppingList(
     @Column
     var createdAt: Date = Date(),
 
+    @Column
+    var isArchived:Boolean = false,
+
     var products:List<Product>?=null
 ) : BaseModel(){
 

@@ -7,8 +7,9 @@ interface RefreshableList<T> {
     var items:MutableLiveData<List<T>>
     var isLoadingRefresh:MutableLiveData<Boolean>
 
-
     fun loadItems()
+    fun onRecyclerClick(type: ClickType, pos:Int)
+
     fun getItems(){
         if(items.value==null){
             isLoadingRefresh.value=true
@@ -19,8 +20,6 @@ interface RefreshableList<T> {
     fun onRefreshItems(){
         loadItems()
     }
-
-    fun onRecyclerClick(type: ClickType, pos:Int)
 
 
 }
