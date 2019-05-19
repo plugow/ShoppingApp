@@ -13,17 +13,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentSearchDialogBinding
 import com.plugow.shoppingapp.ui.adapter.SearchAdapter
-import com.plugow.shoppingapp.viewModel.ShoppingListDetailViewModel
 import dagger.android.support.DaggerAppCompatDialogFragment
 import org.jetbrains.anko.backgroundColor
 import javax.inject.Inject
 import androidx.recyclerview.widget.DividerItemDecoration
-
+import com.plugow.shoppingapp.viewModel.SearchViewModel
 
 
 class SearchDialogFragment : DaggerAppCompatDialogFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var mViewModel:ShoppingListDetailViewModel
+    private lateinit var mViewModel:SearchViewModel
     companion object {
         fun newInstance() : SearchDialogFragment = SearchDialogFragment()
     }
@@ -44,7 +43,7 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
             }
         }
         binding.viewModel=mViewModel
-        mViewModel.loadSearchItems()
+        mViewModel.loadItems()
 
 
         return binding.root
@@ -53,7 +52,7 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(ShoppingListDetailViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

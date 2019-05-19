@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class ShoppingListViewModel @Inject constructor(): ViewModel(), RefreshableList<ShoppingList> {
+class ShoppingListViewModel @Inject constructor(val repo: AppRepo): ViewModel(), RefreshableList<ShoppingList> {
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var currentItemId = 0
@@ -35,13 +35,6 @@ class ShoppingListViewModel @Inject constructor(): ViewModel(), RefreshableList<
         d.set(2018, 7, 20)
         val list = arrayListOf(ShoppingList(name = "test", createdAt = Date()), ShoppingList(name = "test 2", createdAt = d.time))
         items.value = list
-
-        val repo = AppRepo()
-        repo.getSearchItems().subscribeBy(
-            onSuccess = {
-                val t = it
-            }
-        )
     }
 
     override fun onCleared() {
@@ -53,7 +46,7 @@ class ShoppingListViewModel @Inject constructor(): ViewModel(), RefreshableList<
 
     }
 
-    fun onRecyclerClick(type: ClickType, pos:Int){
+    override fun onRecyclerClick(type: ClickType, pos:Int){
         when(type){
             RecyclerClickType.MAIN -> {
                 currentItemId = items.value?.get(pos)?.id ?: 0
@@ -80,7 +73,6 @@ class ShoppingListViewModel @Inject constructor(): ViewModel(), RefreshableList<
                     }
                 ).addTo(disposables)
         }
-
     }
 
 

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.SearchItem
 import kotlinx.android.synthetic.main.shopping_list_item.*
+import org.jetbrains.anko.backgroundColorResource
 
 
 class SearchAdapter : BaseAdapter<SearchItem>() {
@@ -18,13 +19,20 @@ class SearchAdapter : BaseAdapter<SearchItem>() {
         val shoppingList = values[position]
         holder.bind(shoppingList)
         holder.containerView.setOnClickListener {
+            shoppingList.isChosen = !shoppingList.isChosen
             onRecyclerListener.onClick(SearchClickType.MAIN, position)
+            notifyItemChanged(position)
         }
     }
 
     class SearchViewHolder(containerView: View) : BaseViewHolder<SearchItem>(containerView) {
         override fun bind(item: SearchItem) {
             title.text = item.name
+            if (item.isChosen){
+                containerView.backgroundColorResource = R.color.lightAccent
+            } else {
+                containerView.backgroundColorResource = R.color.white
+            }
         }
     }
 

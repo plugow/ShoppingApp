@@ -1,6 +1,7 @@
 package com.plugow.shoppingapp.trait
 
 import androidx.lifecycle.MutableLiveData
+import com.plugow.shoppingapp.ui.adapter.ClickType
 
 interface RefreshableList<T> {
     var items:MutableLiveData<List<T>>
@@ -18,6 +19,8 @@ interface RefreshableList<T> {
     fun onRefreshItems(){
         loadItems()
     }
+
+    fun onRecyclerClick(type: ClickType, pos:Int)
 
 
 }
