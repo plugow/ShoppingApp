@@ -27,8 +27,17 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
             popup.menuInflater.inflate(R.menu.shopping_list_menu, popup.menu)
             popup.setOnMenuItemClickListener {
                 when(it.itemId){
-                    R.id.nav_archive -> {onRecyclerListener.onClick(RecyclerClickType.ARCHIVE, position)}
-                    R.id.nav_remove -> onRecyclerListener.onClick(RecyclerClickType.REMOVE, position)
+                    R.id.nav_archive -> {
+                        shoppingList.isArchived=true
+                        onRecyclerListener.onClick(RecyclerClickType.ARCHIVE, position)
+                        values.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
+                    R.id.nav_remove -> {
+                        onRecyclerListener.onClick(RecyclerClickType.REMOVE, position)
+                        values.removeAt(position)
+                        notifyItemRemoved(position)
+                    }
                 }
                 true
             }

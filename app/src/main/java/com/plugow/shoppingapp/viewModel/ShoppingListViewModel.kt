@@ -18,7 +18,6 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import javax.inject.Inject
 
 class ShoppingListViewModel @Inject constructor(val repo: AppRepo, val ctx:Context): ViewModel(), RefreshableList<ShoppingList> {
@@ -61,8 +60,12 @@ class ShoppingListViewModel @Inject constructor(val repo: AppRepo, val ctx:Conte
                 currentItemId = items.value?.get(pos)?.id ?: 0
                 mEvent.value = Event(ShoppingListEvent.OnItemClick)
             }
-            RecyclerClickType.REMOVE -> {}
-            RecyclerClickType.ARCHIVE -> {}
+            RecyclerClickType.REMOVE -> {
+                items.value?.get(pos)?.delete()
+            }
+            RecyclerClickType.ARCHIVE -> {
+                items.value?.get(pos)?.update()
+            }
         }
     }
 
