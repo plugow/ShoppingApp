@@ -70,6 +70,8 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
                         mEvent.value = Event(SearchEvent.DISMISS)
                     }
                 )
+        } else {
+            mEvent.value = Event(SearchEvent.DISMISS)
         }
 
     }

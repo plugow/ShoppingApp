@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.Product
 import kotlinx.android.synthetic.main.product_list_item.*
+import org.jetbrains.anko.backgroundColorResource
 
 
 class ShoppingListDetailAdapter : BaseAdapter<Product>() {
@@ -33,8 +34,9 @@ class ShoppingListDetailAdapter : BaseAdapter<Product>() {
                 notifyItemRangeChanged(position, values.size)
             }
         }
-        holder.doneCheckBox.setOnCheckedChangeListener { _, b ->
-            product.isDone = b
+        holder.doneCheckBox.setOnClickListener {
+            product.isDone = !product.isDone
+            notifyItemChanged(position)
             onRecyclerListener.onClick(ProductClickType.CHECK, position)
         }
     }
@@ -51,6 +53,11 @@ class ShoppingListDetailAdapter : BaseAdapter<Product>() {
                 amount.text = ""
             }
             doneCheckBox.isChecked = item.isDone
+            if (item.isDone){
+                containerView.backgroundColorResource = R.color.detailGrey
+            } else {
+                containerView.backgroundColorResource = R.color.white
+            }
 
         }
     }

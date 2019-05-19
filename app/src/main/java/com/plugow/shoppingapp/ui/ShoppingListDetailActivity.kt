@@ -20,6 +20,7 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this, viewModelFactory)[ShoppingListDetailViewModel::class.java]
+        actionBar?.setHomeButtonEnabled(true)
         val mAdapter = ShoppingListDetailAdapter()
         val id = intent.getIntExtra("id", 0)
         val binding = DataBindingUtil.setContentView<ActivityShoppingListDetailBinding>(this, R.layout.activity_shopping_list_detail).apply {
