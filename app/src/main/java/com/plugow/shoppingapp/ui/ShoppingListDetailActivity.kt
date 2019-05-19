@@ -21,16 +21,17 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this, viewModelFactory)[ShoppingListDetailViewModel::class.java]
         val mAdapter = ShoppingListDetailAdapter()
+        val id = intent.getIntExtra("id", 0)
         val binding = DataBindingUtil.setContentView<ActivityShoppingListDetailBinding>(this, R.layout.activity_shopping_list_detail).apply {
             lifecycleOwner = this@ShoppingListDetailActivity
             viewModel = mViewModel
             list.adapter = mAdapter
             list.layoutManager = LinearLayoutManager(this@ShoppingListDetailActivity)
             addProductButton.setOnClickListener {
-                val searchDialog = SearchDialogFragment.newInstance()
+                val searchDialog = SearchDialogFragment.newInstance(id)
                 searchDialog.show(supportFragmentManager,"search dialog")
             }
         }
-        mViewModel.loadItems()
+        mViewModel.initValues(id)
     }
 }

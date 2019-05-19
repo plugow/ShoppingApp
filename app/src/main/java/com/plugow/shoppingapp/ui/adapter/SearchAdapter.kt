@@ -20,7 +20,11 @@ class SearchAdapter : BaseAdapter<SearchItem>() {
         holder.bind(shoppingList)
         holder.containerView.setOnClickListener {
             shoppingList.isChosen = !shoppingList.isChosen
-            onRecyclerListener.onClick(SearchClickType.MAIN, position)
+            if (shoppingList.isChosen){
+                onRecyclerListener.onClick(SearchClickType.ADD, position)
+            } else {
+                onRecyclerListener.onClick(SearchClickType.REMOVE, position)
+            }
             notifyItemChanged(position)
         }
     }

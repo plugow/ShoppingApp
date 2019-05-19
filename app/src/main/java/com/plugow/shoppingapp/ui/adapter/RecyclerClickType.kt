@@ -13,7 +13,8 @@ enum class ProductClickType : ClickType {
 }
 
 enum class SearchClickType : ClickType {
-    MAIN
+    ADD,
+    REMOVE
 }
 
 interface ClickType

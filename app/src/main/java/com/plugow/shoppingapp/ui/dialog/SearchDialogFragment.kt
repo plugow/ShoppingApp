@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import dagger.android.support.DaggerAppCompatDialogFragment
 import org.jetbrains.anko.backgroundColor
 import javax.inject.Inject
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.plugow.shoppingapp.event.SearchEvent
 import com.plugow.shoppingapp.viewModel.SearchViewModel
 
 
@@ -24,7 +26,9 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel:SearchViewModel
     companion object {
-        fun newInstance() : SearchDialogFragment = SearchDialogFragment()
+        fun newInstance(shoppingListId:Int) : SearchDialogFragment = SearchDialogFragment().apply {
+            arguments = Bundle().apply { putInt("id", shoppingListId) }
+        }
     }
 
 
@@ -44,6 +48,12 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
         }
         binding.viewModel=mViewModel
         mViewModel.loadItems()
+        mViewModel.event.observe(this, Observer {
+            when(it.getContentIfNotHandled()){
+                SearchEvent.DISMISS -> {dismiss()}
+                null -> {}
+            }
+        })
 
 
         return binding.root
@@ -54,6 +64,7 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
         mViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        mViewModel.shoppingListId = arguments!!.getInt("id", 0)
     }
 
     override fun onResume() {

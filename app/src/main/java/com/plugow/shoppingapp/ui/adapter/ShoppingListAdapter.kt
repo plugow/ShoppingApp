@@ -38,10 +38,8 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
     }
 
     class ShoppingListViewHolder(containerView: View) : BaseViewHolder<ShoppingList>(containerView) {
-        lateinit var menu:ImageButton
         override fun bind(item: ShoppingList) {
             title.text = item.name
-            menu = contextMenu
         }
     }
 

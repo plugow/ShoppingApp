@@ -1,10 +1,7 @@
 package com.plugow.shoppingapp.db.model
 
 import com.plugow.shoppingapp.db.AppDB
-import com.raizlabs.android.dbflow.annotation.Column
-import com.raizlabs.android.dbflow.annotation.ForeignKey
-import com.raizlabs.android.dbflow.annotation.PrimaryKey
-import com.raizlabs.android.dbflow.annotation.Table
+import com.raizlabs.android.dbflow.annotation.*
 
 @Table(database = AppDB::class)
 class Product (
@@ -21,7 +18,9 @@ class Product (
     @Column
     var isDone:Boolean = false,
 
-    @ForeignKey(stubbedRelationship = true)
-    var shoppingList: ShoppingList?=null
+    @Column
+    @ForeignKey(tableClass = ShoppingList::class, references = [ForeignKeyReference(
+        columnName = "shopping_list_id", foreignKeyColumnName = "id")])
+    var shoppingListId:Int?=null
 
 )

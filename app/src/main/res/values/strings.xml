@@ -22,4 +22,5 @@
     <string name="new_list">New List</string>
     <string name="ready">READY</string>
     <string name="add_product">Add product</string>
+    <string name="wrong">Something went wrong...</string>
 </resources>

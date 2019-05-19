@@ -30,7 +30,7 @@ class ShoppingList(
         if (products == null) {
             products = SQLite.select()
                 .from(Product::class.java)
-                .where(Product_Table.shoppingList_id.eq(id))
+                .where(Product_Table.shopping_list_id.eq(id))
                 .queryList()
         }
         return products as List<Product>
@@ -40,7 +40,7 @@ class ShoppingList(
         val res = super.save()
         products?.let {
             for (p in it) {
-                p.shoppingList = this
+                p.shoppingListId = this.id
                 p.save()
             }
         }

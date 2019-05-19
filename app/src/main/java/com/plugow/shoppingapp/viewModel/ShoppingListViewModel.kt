@@ -33,7 +33,7 @@ class ShoppingListViewModel @Inject constructor(val repo: AppRepo): ViewModel(),
     override fun loadItems() {
         val d = Calendar.getInstance()
         d.set(2018, 7, 20)
-        val list = arrayListOf(ShoppingList(name = "test", createdAt = Date()), ShoppingList(name = "test 2", createdAt = d.time))
+        val list = arrayListOf(ShoppingList(id = 1, name = "test", createdAt = Date()), ShoppingList(id = 2, name = "test 2", createdAt = d.time))
         items.value = list
     }
 
