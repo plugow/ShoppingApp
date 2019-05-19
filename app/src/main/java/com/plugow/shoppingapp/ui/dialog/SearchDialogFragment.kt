@@ -47,7 +47,7 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
             }
         }
         binding.viewModel=mViewModel
-        mViewModel.loadItems()
+        mViewModel.initValues()
         mViewModel.event.observe(this, Observer {
             when(it.getContentIfNotHandled()){
                 SearchEvent.DISMISS -> {dismiss()}

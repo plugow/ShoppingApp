@@ -16,7 +16,10 @@ import com.plugow.shoppingapp.ui.adapter.*
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import org.jetbrains.anko.toast
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, val rxBus: RxBus): ViewModel(), RefreshableList<SearchItem> {
@@ -25,7 +28,12 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
         get() = mEvent
     var selectedItems = arrayListOf<SearchItem>()
     var shoppingListId:Int = 0
+    val searchbarSubject by lazy {
+        PublishSubject.create<String>()
+    }
+    var searchBar:MutableLiveData<String> = MutableLiveData()
 
+    lateinit var mItems:List<SearchItem>
     override var items: MutableLiveData<List<SearchItem>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
 
@@ -40,9 +48,27 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
         repo.getSearchItems()
             .subscribeBy(
                 onSuccess = {
-                    items.value = it
+                    mItems = it
+                    items.value = mItems
                 }
             ).addTo(disposables)
+    }
+
+    fun initValues(){
+        loadItems()
+        searchbarSubject
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                filterList(it)
+            }.addTo(disposables)
+    }
+
+    fun filterList(searchText:String){
+        val temp = mItems.filter { it.name.toLowerCase().contains(searchText as CharSequence, true) }
+        items.postValue(temp)
     }
 
 
@@ -73,7 +99,10 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
         } else {
             mEvent.value = Event(SearchEvent.DISMISS)
         }
+    }
 
+    fun onSearchTextChanged(){
+        searchBar.value?.let { searchbarSubject.onNext(it) }
     }
 
 
