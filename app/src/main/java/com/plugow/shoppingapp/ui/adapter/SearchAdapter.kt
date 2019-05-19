@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.plugow.shoppingapp.R
+import com.plugow.shoppingapp.db.model.SearchItem
 import kotlinx.android.synthetic.main.shopping_list_item.*
 
 

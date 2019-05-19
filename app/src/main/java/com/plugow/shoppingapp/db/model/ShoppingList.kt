@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel
 import com.raizlabs.android.dbflow.annotation.OneToMany
 import com.raizlabs.android.dbflow.kotlinextensions.save
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import java.util.*
 
 
 @Table(database = AppDB::class)
@@ -17,6 +18,9 @@ class ShoppingList(
     var id:Int = -1,
     @Column
     var name:String = "",
+
+    @Column
+    var createdAt: Date = Date(),
 
     var products:List<Product>?=null
 ) : BaseModel(){

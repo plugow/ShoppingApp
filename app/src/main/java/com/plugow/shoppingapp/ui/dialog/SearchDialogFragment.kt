@@ -39,6 +39,9 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
             list.addItemDecoration(
                 DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
             )
+            readyButton.setOnClickListener {
+                dismiss()
+            }
         }
         binding.viewModel=mViewModel
         mViewModel.loadSearchItems()

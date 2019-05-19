@@ -23,4 +23,8 @@ class ArchivedListViewModel @Inject constructor(): ViewModel(), RefreshableList<
         disposables.clear()
     }
 
+    fun sort() {
+        val d =1
+    }
+
 }

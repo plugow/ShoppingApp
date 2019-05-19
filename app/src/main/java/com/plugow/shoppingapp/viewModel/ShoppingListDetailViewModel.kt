@@ -3,15 +3,19 @@ package com.plugow.shoppingapp.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.Product
+import com.plugow.shoppingapp.db.model.SearchItem
 import com.plugow.shoppingapp.di.util.Event
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.*
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
+import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
-class ShoppingListDetailViewModel @Inject constructor(): ViewModel(), RefreshableList<Product> {
+class ShoppingListDetailViewModel @Inject constructor(val repo: AppRepo): ViewModel(), RefreshableList<Product> {
     val mEvent:MutableLiveData<Event<ShoppingListEvent>> = MutableLiveData()
     val event : LiveData<Event<ShoppingListEvent>>
         get() = mEvent
@@ -33,8 +37,12 @@ class ShoppingListDetailViewModel @Inject constructor(): ViewModel(), Refreshabl
     }
 
     fun loadSearchItems() {
-        val list = arrayListOf(SearchItem(name = "pierwszy"), SearchItem(name = "drugi"))
-        searchItems.value = list
+        repo.getSearchItems()
+            .subscribeBy(
+                onSuccess = {
+                    searchItems.value = it
+                }
+            ).addTo(disposables)
     }
 
     fun addProduct() {

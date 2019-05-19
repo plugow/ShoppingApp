@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.lifecycle.Observer
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentShoppingListBinding
@@ -47,6 +48,8 @@ class ShoppingListFragment : DaggerFragment() {
                 addNewList()
             }
         }
+        val sortButton = activity?.findViewById<ImageButton>(R.id.sortButton)
+        sortButton?.setOnClickListener { mViewModel.sort() }
         mViewModel.loadItems()
         mViewModel.event.observe(this, Observer {
             when(it.getContentIfNotHandled()){

@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AndroidSupportInjectionModule::class, AppModule::class,
-    ActivityBindingModule::class, ViewModelModule::class])
+    ActivityBindingModule::class, ViewModelModule::class, DBModule::class])
 interface AppComponent : AndroidInjector<ShoppingApp> {
     @Component.Builder
     interface Builder {

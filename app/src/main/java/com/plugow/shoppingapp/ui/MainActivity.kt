@@ -30,9 +30,11 @@ class MainActivity : DaggerAppCompatActivity() {
         setContentView(R.layout.activity_main)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         navigation.selectedItemId = R.id.navigation_shopping
+        toolbarTitle.text = getString(R.string.app_name)
+        setSupportActionBar(mainToolbar)
     }
 
-    fun loadFragment(fragment: Fragment?): Boolean {
+    private fun loadFragment(fragment: Fragment?): Boolean {
         if (fragment != null) {
             supportFragmentManager
                     .beginTransaction()
