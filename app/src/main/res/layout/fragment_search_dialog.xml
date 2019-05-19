@@ -6,6 +6,7 @@
         <variable
                 name="viewModel"
                 type="com.plugow.shoppingapp.viewModel.SearchViewModel"/>
+        <import type="android.view.View"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +44,9 @@
                 android:layout_marginEnd="16dp"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+                app:isSelected="@{viewModel.isCustomItemSelected}"
+                android:onClick="@{() -> viewModel.onCustomItemClicked()}"
+                android:visibility="@{viewModel.customItemVisibility ? View.VISIBLE : View.GONE}"
                 android:id="@+id/customItem"
                 android:minHeight="50dp"
                 android:layout_width="match_parent"
@@ -60,6 +64,7 @@
                     android:id="@+id/imageView"/>
 
             <TextView
+                    android:text="@{viewModel.searchBar}"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:id="@+id/title"
@@ -69,6 +74,14 @@
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     android:layout_marginStart="16dp"
                     app:layout_constraintTop_toTopOf="parent"/>
+
+            <View
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,8 +95,6 @@
 
         <androidx.recyclerview.widget.RecyclerView
                 app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
-                android:paddingTop="16dp"
-                android:paddingBottom="100dp"
                 android:id="@+id/list"
                 app:data="@{viewModel.items}"
                 android:layout_width="match_parent"

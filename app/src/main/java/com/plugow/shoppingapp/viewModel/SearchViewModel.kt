@@ -36,6 +36,8 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
     lateinit var mItems:List<SearchItem>
     override var items: MutableLiveData<List<SearchItem>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
+    var customItemVisibility = MutableLiveData(false)
+    var isCustomItemSelected = MutableLiveData(false)
 
     private val disposables= CompositeDisposable()
 
@@ -102,7 +104,19 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
     }
 
     fun onSearchTextChanged(){
-        searchBar.value?.let { searchbarSubject.onNext(it) }
+        searchBar.value?.let {
+            searchbarSubject.onNext(it)
+            customItemVisibility.value = it.trim() != ""
+        }
+    }
+
+    fun onCustomItemClicked(){
+        isCustomItemSelected.value = !isCustomItemSelected.value!!
+        if (isCustomItemSelected.value!!){
+            selectedItems.add(SearchItem(name = searchBar.value!!, isChosen = true))
+        } else {
+            selectedItems.removeAll {it.name == searchBar.value!!}
+        }
     }
 
 

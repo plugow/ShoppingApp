@@ -1,7 +1,11 @@
 package com.plugow.shoppingapp.di.util
 
+import android.view.View
+import androidx.annotation.ColorRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.ui.adapter.BaseAdapter
 import com.plugow.shoppingapp.ui.adapter.OnRecyclerListener
 
@@ -22,5 +26,11 @@ fun setRecyclerListener(recyclerView: RecyclerView, onRecyclerListener: OnRecycl
     if (recyclerView.adapter is BaseAdapter<*>) {
         (recyclerView.adapter as BaseAdapter<*>).setListener(onRecyclerListener)
     }
+}
+
+@BindingAdapter("isSelected")
+fun setBackground(view: View, isSelected:Boolean) {
+    if(isSelected) view.setBackgroundResource(R.color.lightAccent)
+    else view.setBackgroundResource(R.color.white)
 }
 

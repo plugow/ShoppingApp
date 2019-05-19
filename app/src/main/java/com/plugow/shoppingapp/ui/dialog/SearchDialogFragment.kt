@@ -62,7 +62,7 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
+            ViewModelProviders.of(this@SearchDialogFragment, viewModelFactory).get(SearchViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         mViewModel.shoppingListId = arguments!!.getInt("id", 0)
     }
