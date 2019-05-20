@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:background="@drawable/dialog_background"
             android:layout_width="match_parent"
+            android:paddingBottom="@dimen/min_margin"
             android:layout_height="match_parent">
 
         <EditText
@@ -94,6 +95,8 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
+                android:clipToPadding="true"
+                android:paddingBottom="@dimen/min_margin"
                 app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
                 android:id="@+id/list"
                 app:data="@{viewModel.items}"
