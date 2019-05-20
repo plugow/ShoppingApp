@@ -30,20 +30,15 @@ androidExtensions {
 }
 
 ext {
-    android_data_binding_version = '2.0.0-beta01'
     anko_version = "0.10.8"
     dbflow_version = "4.2.4"
-    retrofit_version = "2.4.0"
-    okio_version = "1.14.1"
     rxjava_version = "2.1.16"
     rxandroid_version = "2.0.2"
     rxkotlin_version = "2.2.0"
     dagger_version = "2.16"
-    android_data_binding_version = "1.1.1"
     android_binding = "2.2.0-alpha01"
     mockito_version = "2.27.0"
     kotlin_mockito_version = "2.1.0"
-    dexopener_version = "2.0.2"
     mockk_version = "1.9.2"
 }
 
@@ -71,11 +66,6 @@ dependencies {
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$kotlin_mockito_version"
     androidTestImplementation "io.mockk:mockk-android:$mockk_version"
 
-    //retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-
     //dagger
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
@@ -86,7 +76,6 @@ dependencies {
     //rxjava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
 
     //anko
