@@ -101,6 +101,7 @@ class SearchViewModel @Inject constructor(private val repo: AppRepo, private val
     }
 
     fun onSearchTextChanged(){
+        isCustomItemSelected.value = false
         searchBar.value?.let {
             searchbarSubject.onNext(it)
             customItemVisibility.value = it.trim() != ""
