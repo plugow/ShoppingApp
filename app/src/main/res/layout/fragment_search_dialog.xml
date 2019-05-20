@@ -23,25 +23,25 @@
                 android:id="@+id/searchEditText"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/base_margin"
+                android:layout_marginTop="@dimen/min_margin"
                 app:layout_constraintEnd_toStartOf="@+id/readyButton"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="@dimen/min_margin"/>
 
         <TextView
                 android:onClick="@{() -> viewModel.onReadyClick()}"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ready"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/min_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/min_margin"
                 android:id="@+id/readyButton"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="@dimen/base_margin"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 app:isSelected="@{viewModel.isCustomItemSelected}"
@@ -60,19 +60,19 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/base_margin"
                     android:id="@+id/imageView"/>
 
             <TextView
                     android:text="@{viewModel.searchBar}"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/text_size"
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/base_margin"
                     app:layout_constraintTop_toTopOf="parent"/>
 
             <View

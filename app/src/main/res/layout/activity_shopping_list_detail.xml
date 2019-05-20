@@ -25,8 +25,8 @@
                     android:background="@color/detailGrey"
                     android:clipToPadding="false"
                     app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
+                    android:paddingTop="@dimen/base_margin"
+                    android:paddingBottom="@dimen/base_margin"
                     android:id="@+id/list"
                     app:data="@{viewModel.items}"
                     android:layout_width="match_parent"
@@ -37,12 +37,12 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/addProductButton"
                 android:layout_gravity="bottom|end"
-                android:layout_marginBottom="32dp"
+                android:layout_marginBottom="@dimen/base_margin_2"
                 android:layout_width="wrap_content"
                 android:src="@drawable/baseline_add_white_24"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/refreshEpisodes"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/base_margin"
                 app:layout_constraintEnd_toEndOf="@+id/refreshEpisodes"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

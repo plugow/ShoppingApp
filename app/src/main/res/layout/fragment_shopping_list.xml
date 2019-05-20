@@ -22,8 +22,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:clipToPadding="false"
                 app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
+                android:paddingTop="@dimen/base_margin"
+                android:paddingBottom="@dimen/base_margin"
                 android:id="@+id/list"
                 app:data="@{viewModel.items}"
                 android:layout_width="match_parent"
