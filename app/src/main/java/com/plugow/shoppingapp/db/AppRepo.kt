@@ -26,7 +26,8 @@ class AppRepo {
             .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun getShoppingList() =
-        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(false) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt))
+        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(false))
+            .orderBy(ShoppingList_Table.createdAt, false)
             .rx().queryList()
             .flattenAsObservable { it }
             .flatMap { fillShoppingList(it).subscribeOn(Schedulers.io()) }
@@ -34,7 +35,8 @@ class AppRepo {
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun getArchivedList() =
-        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(true) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt))
+        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(true))
+            .orderBy(ShoppingList_Table.createdAt, false)
             .rx().queryList()
             .flattenAsObservable { it }
             .flatMap { fillShoppingList(it).subscribeOn(Schedulers.io()) }

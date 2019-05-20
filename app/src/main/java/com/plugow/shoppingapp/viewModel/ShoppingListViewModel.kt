@@ -14,11 +14,11 @@ import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ClickType
 import com.plugow.shoppingapp.ui.adapter.RecyclerClickType
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -87,18 +87,20 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
     }
 
     fun sort() {
-        items.value?.let {
-            it.toObservable()
-                .toSortedList { a, b ->
-                    isAscending = ! isAscending
-                    if (isAscending) a.createdAt.compareTo(b.createdAt)
-                    else b.createdAt.compareTo(a.createdAt)
+        items.value?.let { items ->
+            isAscending = !isAscending
+            Single.fromCallable {
+                if (isAscending){
+                    items.toMutableList().sortedBy { it.createdAt }.toList()
+                } else {
+                    items.toMutableList().sortedByDescending { it.createdAt }.toList()
                 }
+            }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {sortedList ->
-                        items.value = sortedList
+                        this.items.value = sortedList
                     }
                 ).addTo(disposables)
         }

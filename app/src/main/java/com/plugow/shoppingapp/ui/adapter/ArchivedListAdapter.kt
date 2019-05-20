@@ -48,7 +48,7 @@ class ArchivedListAdapter : BaseAdapter<ShoppingList>() {
 
     class ArchivedListViewHolder(containerView: View) : BaseViewHolder<ShoppingList>(containerView) {
         override fun bind(item: ShoppingList) {
-            title.text = item.name
+            title.text = title.context.getString(R.string.tile_name,item.name)
             if (item.productsAmount > 0){
                 shoppingResult.text = shoppingResult.context.getString(R.string.shopping_result, item.doneAmount, item.productsAmount)
                 shoppingProgress.progress = ((item.doneAmount.toFloat()/item.productsAmount.toFloat()) * 100).toInt()
