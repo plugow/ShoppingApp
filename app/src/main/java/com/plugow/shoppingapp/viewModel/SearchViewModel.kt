@@ -27,11 +27,11 @@ class SearchViewModel @Inject constructor(private val repo: AppRepo, private val
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var customItemVisibility = MutableLiveData(false)
     var isCustomItemSelected = MutableLiveData(false)
+    var searchBar:MutableLiveData<String> = MutableLiveData()
     var selectedItems = arrayListOf<SearchItem>()
     var shoppingListId:Int = 0
-    private val searchbarSubject by lazy { PublishSubject.create<String>() }
-    private val disposables= CompositeDisposable()
-    var searchBar:MutableLiveData<String> = MutableLiveData()
+    private val searchbarSubject = PublishSubject.create<String>()
+    private val disposables = CompositeDisposable()
     lateinit var mItems:List<SearchItem>
     private val mEvent:MutableLiveData<Event<SearchEvent>> = MutableLiveData()
     val event : LiveData<Event<SearchEvent>>
