@@ -50,10 +50,10 @@ class ShoppingListFragment : DaggerFragment() {
         }
         val sortButton = activity?.findViewById<ImageButton>(R.id.sortButton)
         sortButton?.setOnClickListener { mViewModel.sort() }
-        mViewModel.loadItems()
+        mViewModel.initValues()
         mViewModel.event.observe(this, Observer {
             when(it.getContentIfNotHandled()){
-                ShoppingListEvent.OnItemClick -> {startActivity<ShoppingListDetailActivity>("id" to mViewModel.currentItemId)}
+                ShoppingListEvent.OnItemClick -> {startActivity<ShoppingListDetailActivity>("id" to mViewModel.currentItem.id, "name" to mViewModel.currentItem.name)}
                 null -> {}
             }
         })

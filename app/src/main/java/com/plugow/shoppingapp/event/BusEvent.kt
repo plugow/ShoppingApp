@@ -1,5 +1,6 @@
 package com.plugow.shoppingapp.event
 
-enum class BusEvent {
-    REFRESH_PRODUCTS
+sealed class BusEvent {
+    object RefreshProducts : BusEvent()
+    class RefreshShoppingList(val shoppingListId:Int) : BusEvent()
 }

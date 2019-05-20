@@ -13,9 +13,11 @@ import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.*
 import com.raizlabs.android.dbflow.kotlinextensions.delete
 import com.raizlabs.android.dbflow.kotlinextensions.update
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ShoppingListDetailViewModel @Inject constructor(private val repo: AppRepo, private val rxBus: RxBus): ViewModel(), RefreshableList<Product> {
@@ -37,18 +39,24 @@ class ShoppingListDetailViewModel @Inject constructor(private val repo: AppRepo,
             .subscribeBy(
                 onSuccess = {
                     items.value = it
+                    isLoadingRefresh.value=false
                 }
             ).addTo(disposables)
     }
 
-    fun initValues(id:Int){
-        rxBus.getEventObservable().subscribeBy {
-            if (it == BusEvent.REFRESH_PRODUCTS){
-                loadItems()
-            }
-        }.addTo(disposables)
+    override fun initValues(id:Int){
         shoppingListId = id
-        loadItems()
+        super.initValues(id)
+        rxBus.getEventObservable()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy {
+                if (it == BusEvent.RefreshProducts){
+                    isLoadingRefresh.value = true
+                    loadItems()
+                    rxBus.emitEvent(BusEvent.RefreshShoppingList(shoppingListId))
+                }
+        }.addTo(disposables)
     }
 
     override fun onRecyclerClick(type:ClickType, pos:Int){
@@ -63,6 +71,7 @@ class ShoppingListDetailViewModel @Inject constructor(private val repo: AppRepo,
             }
             ProductClickType.CHECK -> items.value?.get(pos)?.update()
         }
+        rxBus.emitEvent(BusEvent.RefreshShoppingList(shoppingListId))
     }
 
 }

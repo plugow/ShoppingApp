@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.ShoppingList
+import com.plugow.shoppingapp.event.BusEvent
+import com.plugow.shoppingapp.event.RxBus
 import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
@@ -20,10 +22,10 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context): ViewModel(), RefreshableList<ShoppingList> {
+class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context, private val rxBus: RxBus): ViewModel(), RefreshableList<ShoppingList> {
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
-    var currentItemId = 0
+    lateinit var currentItem:ShoppingList
     private val disposables= CompositeDisposable()
     private val mEvent:MutableLiveData<Event<ShoppingListEvent>> = MutableLiveData()
     val event : LiveData<Event<ShoppingListEvent>>
@@ -36,8 +38,18 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
             .subscribeBy(
                 onSuccess = {
                     items.value = it
+                    isLoadingRefresh.value = false
                 }
             ).addTo(disposables)
+    }
+
+    override fun initValues(id: Int) {
+        super.initValues(id)
+        rxBus.getEventObservable().subscribe {
+            if (it is BusEvent.RefreshShoppingList){
+                refreshItem(it.shoppingListId)
+            }
+        }.addTo(disposables)
     }
 
     override fun onCleared() {
@@ -57,7 +69,7 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
     override fun onRecyclerClick(type: ClickType, pos:Int){
         when(type){
             RecyclerClickType.MAIN -> {
-                currentItemId = items.value?.get(pos)?.id ?: 0
+                currentItem = items.value?.get(pos)!!
                 mEvent.value = Event(ShoppingListEvent.OnItemClick)
             }
             RecyclerClickType.REMOVE -> {
@@ -85,6 +97,19 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
                     }
                 ).addTo(disposables)
         }
+    }
+
+    fun refreshItem(shoppingListId:Int){
+        repo.getShoppingListById(shoppingListId)
+            .subscribe {
+                val index = items.value?.indexOfFirst { it.id == shoppingListId }
+                index?.let {i ->
+                    val temp = items.value as MutableList
+                    temp[i] = it
+                    items.postValue(temp)
+                }
+
+            }.addTo(disposables)
     }
 
 

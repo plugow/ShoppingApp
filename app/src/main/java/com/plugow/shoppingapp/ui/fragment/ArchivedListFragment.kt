@@ -40,7 +40,7 @@ class ArchivedListFragment : DaggerFragment() {
         }
         val sortButton = activity?.findViewById<ImageButton>(R.id.sortButton)
         sortButton?.setOnClickListener { mViewModel.sort() }
-        mViewModel.loadItems()
+        mViewModel.initValues()
         return binding.root
     }
 

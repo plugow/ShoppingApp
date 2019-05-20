@@ -39,6 +39,7 @@ class ArchivedListViewModel @Inject constructor(private val repo: AppRepo): View
             .subscribeBy(
                 onSuccess = {
                     items.value = it
+                    isLoadingRefresh.value = false
                 }
             ).addTo(disposables)
     }

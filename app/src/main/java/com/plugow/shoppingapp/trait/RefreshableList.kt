@@ -20,4 +20,8 @@ interface RefreshableList<T> {
     fun onRefreshItems(){
         loadItems()
     }
+
+    fun initValues(id:Int = 0){
+        getItems()
+    }
 }

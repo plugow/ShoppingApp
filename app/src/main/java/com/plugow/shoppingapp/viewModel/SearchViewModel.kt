@@ -48,12 +48,13 @@ class SearchViewModel @Inject constructor(private val repo: AppRepo, private val
                 onSuccess = {
                     mItems = it
                     items.value = mItems
+                    isLoadingRefresh.value = false
                 }
             ).addTo(disposables)
     }
 
-    fun initValues(){
-        loadItems()
+    override fun initValues(id: Int) {
+        super.initValues(id)
         searchbarSubject
             .debounce(300, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
@@ -87,7 +88,7 @@ class SearchViewModel @Inject constructor(private val repo: AppRepo, private val
                 .subscribeBy(
                     onSuccess = {
                         mEvent.value = Event(SearchEvent.DISMISS)
-                        rxBus.emitEvent(BusEvent.REFRESH_PRODUCTS)
+                        rxBus.emitEvent(BusEvent.RefreshProducts)
                     },
                     onError = {
                         ctx.toast(R.string.wrong)

@@ -47,4 +47,11 @@ class AppRepo {
         return  Observable.just(shoppingList)
     }
 
+    fun getShoppingListById(shoppingListId: Int) =
+        (select from ShoppingList::class where ShoppingList_Table.id.eq(shoppingListId))
+            .rx().querySingle()
+            .toObservable()
+            .flatMap { fillShoppingList(it) }
+            .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
+
 }
