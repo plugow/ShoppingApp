@@ -25,7 +25,10 @@ class ShoppingList(
     @Column
     var isArchived:Boolean = false,
 
-    var products:List<Product>?=null
+    var products:List<Product>?=null,
+
+    var productsAmount:Int = 0,
+    var doneAmount:Int = 0
 ) : BaseModel(){
 
     @OneToMany(methods = [OneToMany.Method.ALL], variableName = "products")

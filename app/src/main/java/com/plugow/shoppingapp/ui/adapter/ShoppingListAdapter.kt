@@ -50,6 +50,13 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
     class ShoppingListViewHolder(containerView: View) : BaseViewHolder<ShoppingList>(containerView) {
         override fun bind(item: ShoppingList) {
             title.text = item.name
+            if (item.productsAmount > 0){
+                shoppingResult.text = shoppingResult.context.getString(R.string.shopping_result, item.doneAmount, item.productsAmount)
+                shoppingProgress.progress = ((item.doneAmount.toFloat()/item.productsAmount.toFloat()) * 100).toInt()
+            } else {
+                shoppingResult.text = ""
+                shoppingProgress.progress = 0
+            }
         }
     }
 

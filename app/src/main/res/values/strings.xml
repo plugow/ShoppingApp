@@ -24,4 +24,5 @@
     <string name="add_product">Add product</string>
     <string name="wrong">Something went wrong…</string>
     <string name="restore_list">Restore List</string>
+    <string name="shopping_result">%1$d/%2$d</string>
 </resources>

@@ -4,6 +4,7 @@ import com.plugow.shoppingapp.db.model.*
 import com.raizlabs.android.dbflow.kotlinextensions.*
 import com.raizlabs.android.dbflow.rx2.kotlinextensions.rx
 import com.raizlabs.android.dbflow.sql.language.OrderBy
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
@@ -26,10 +27,24 @@ class AppRepo {
 
     fun getShoppingList() =
         (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(false) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt))
-            .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .rx().queryList()
+            .flattenAsObservable { it }
+            .flatMap { fillShoppingList(it).subscribeOn(Schedulers.io()) }
+            .toList()
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun getArchivedList() =
         (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(true) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt))
-            .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            .rx().queryList()
+            .flattenAsObservable { it }
+            .flatMap { fillShoppingList(it).subscribeOn(Schedulers.io()) }
+            .toList()
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+    private fun fillShoppingList(shoppingList:ShoppingList):Observable<ShoppingList>{
+        shoppingList.productsAmount = shoppingList.products?.size ?: 0
+        shoppingList.doneAmount = shoppingList.products?.filter { it.isDone }?.size ?: 0
+        return  Observable.just(shoppingList)
+    }
 
 }
