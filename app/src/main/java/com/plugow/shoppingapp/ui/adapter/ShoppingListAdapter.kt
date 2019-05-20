@@ -23,25 +23,27 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
             onRecyclerListener.onClick(RecyclerClickType.MAIN, position)
         }
         holder.contextMenu.setOnClickListener {
-            val popup = PopupMenu(holder.containerView.context, holder.contextMenu, Gravity.END)
-            popup.menuInflater.inflate(R.menu.shopping_list_menu, popup.menu)
-            popup.setOnMenuItemClickListener {
-                when(it.itemId){
-                    R.id.nav_archive -> {
-                        shoppingList.isArchived=true
-                        onRecyclerListener.onClick(RecyclerClickType.ARCHIVE, position)
-                        values.removeAt(position)
-                        notifyItemRemoved(position)
+                val popup = PopupMenu(holder.containerView.context, holder.contextMenu, Gravity.END)
+                popup.menuInflater.inflate(R.menu.shopping_list_menu, popup.menu)
+                popup.setOnMenuItemClickListener {
+                    when(it.itemId){
+                        R.id.nav_archive -> {
+                            shoppingList.isArchived=true
+                            onRecyclerListener.onClick(RecyclerClickType.ARCHIVE, position)
+                            values.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, values.size)
+                        }
+                        R.id.nav_remove -> {
+                            onRecyclerListener.onClick(RecyclerClickType.REMOVE, position)
+                            values.removeAt(position)
+                            notifyItemRemoved(position)
+                            notifyItemRangeChanged(position, values.size)
+                        }
                     }
-                    R.id.nav_remove -> {
-                        onRecyclerListener.onClick(RecyclerClickType.REMOVE, position)
-                        values.removeAt(position)
-                        notifyItemRemoved(position)
-                    }
+                    true
                 }
-                true
-            }
-            popup.show()
+                popup.show()
         }
     }
 

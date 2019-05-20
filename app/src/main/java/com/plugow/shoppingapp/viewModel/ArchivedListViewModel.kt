@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.ShoppingList
 import com.plugow.shoppingapp.trait.RefreshableList
+import com.plugow.shoppingapp.ui.adapter.ArchiveClickType
 import com.plugow.shoppingapp.ui.adapter.ClickType
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -18,6 +19,14 @@ import javax.inject.Inject
 class ArchivedListViewModel @Inject constructor(val repo: AppRepo): ViewModel(), RefreshableList<ShoppingList>{
     var isAscending = false
     override fun onRecyclerClick(type: ClickType, pos: Int) {
+        when(type){
+            ArchiveClickType.REMOVE -> {
+                items.value?.get(pos)?.delete()
+            }
+            ArchiveClickType.RESTORE -> {
+                items.value?.get(pos)?.update()
+            }
+        }
 
     }
 

@@ -17,4 +17,9 @@ enum class SearchClickType : ClickType {
     REMOVE
 }
 
+enum class ArchiveClickType : ClickType {
+    RESTORE,
+    REMOVE
+}
+
 interface ClickType
