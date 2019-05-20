@@ -16,8 +16,13 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ArchivedListViewModel @Inject constructor(val repo: AppRepo): ViewModel(), RefreshableList<ShoppingList>{
+class ArchivedListViewModel @Inject constructor(private val repo: AppRepo): ViewModel(), RefreshableList<ShoppingList>{
+    override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
+    override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var isAscending = false
+    private val disposables= CompositeDisposable()
+
+
     override fun onRecyclerClick(type: ClickType, pos: Int) {
         when(type){
             ArchiveClickType.REMOVE -> {
@@ -27,7 +32,6 @@ class ArchivedListViewModel @Inject constructor(val repo: AppRepo): ViewModel(),
                 items.value?.get(pos)?.update()
             }
         }
-
     }
 
     override fun loadItems() {
@@ -38,11 +42,6 @@ class ArchivedListViewModel @Inject constructor(val repo: AppRepo): ViewModel(),
                 }
             ).addTo(disposables)
     }
-
-    override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
-    override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
-
-    private val disposables= CompositeDisposable()
 
     override fun onCleared() {
         super.onCleared()

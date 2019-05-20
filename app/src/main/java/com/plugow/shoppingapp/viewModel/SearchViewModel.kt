@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.SearchItem
-import com.plugow.shoppingapp.di.util.Event
+import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.BusEvent
 import com.plugow.shoppingapp.event.RxBus
 import com.plugow.shoppingapp.event.SearchEvent
@@ -22,24 +22,20 @@ import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, val rxBus: RxBus): ViewModel(), RefreshableList<SearchItem> {
-    val mEvent:MutableLiveData<Event<SearchEvent>> = MutableLiveData()
-    val event : LiveData<Event<SearchEvent>>
-        get() = mEvent
-    var selectedItems = arrayListOf<SearchItem>()
-    var shoppingListId:Int = 0
-    val searchbarSubject by lazy {
-        PublishSubject.create<String>()
-    }
-    var searchBar:MutableLiveData<String> = MutableLiveData()
-
-    lateinit var mItems:List<SearchItem>
+class SearchViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context, private val rxBus: RxBus) : ViewModel(), RefreshableList<SearchItem> {
     override var items: MutableLiveData<List<SearchItem>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var customItemVisibility = MutableLiveData(false)
     var isCustomItemSelected = MutableLiveData(false)
-
+    var selectedItems = arrayListOf<SearchItem>()
+    var shoppingListId:Int = 0
+    private val searchbarSubject by lazy { PublishSubject.create<String>() }
     private val disposables= CompositeDisposable()
+    var searchBar:MutableLiveData<String> = MutableLiveData()
+    lateinit var mItems:List<SearchItem>
+    private val mEvent:MutableLiveData<Event<SearchEvent>> = MutableLiveData()
+    val event : LiveData<Event<SearchEvent>>
+        get() = mEvent
 
     override fun onCleared() {
         super.onCleared()
@@ -68,7 +64,7 @@ class SearchViewModel @Inject constructor(val repo: AppRepo, val ctx:Context, va
             }.addTo(disposables)
     }
 
-    fun filterList(searchText:String){
+    private fun filterList(searchText:String){
         val temp = mItems.filter { it.name.toLowerCase().contains(searchText as CharSequence, true) }
         items.postValue(temp)
     }

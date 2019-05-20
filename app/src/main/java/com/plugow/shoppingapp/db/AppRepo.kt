@@ -9,10 +9,9 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
 class AppRepo {
-
-//
     fun getSearchItems() =
-            (select from SearchItem::class).rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            (select from SearchItem::class)
+                .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun addProducts(items:List<SearchItem>, shoppingListId:Int) =
         items.toObservable()
@@ -22,13 +21,15 @@ class AppRepo {
             .observeOn(AndroidSchedulers.mainThread())
 
     fun getProductById(shoppingListId: Int) =
-        (select from Product::class where Product_Table.shopping_list_id.eq(shoppingListId)).rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        (select from Product::class where Product_Table.shopping_list_id.eq(shoppingListId))
+            .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun getShoppingList() =
-        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(false) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt)).rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(false) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt))
+            .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun getArchivedList() =
-        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(true) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt)).rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-
+        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(true) orderBy OrderBy.fromProperty(ShoppingList_Table.createdAt))
+            .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 }

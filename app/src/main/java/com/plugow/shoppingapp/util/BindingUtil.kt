@@ -1,8 +1,6 @@
-package com.plugow.shoppingapp.di.util
+package com.plugow.shoppingapp.util
 
 import android.view.View
-import androidx.annotation.ColorRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R

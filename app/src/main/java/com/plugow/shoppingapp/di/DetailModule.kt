@@ -12,5 +12,4 @@ abstract class DetailModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract fun searchDialogFragment() : SearchDialogFragment
-
 }

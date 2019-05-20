@@ -15,5 +15,4 @@ abstract class MainModule {
     @FragmentScoped
     @ContributesAndroidInjector
     abstract fun archivedListFragment() : ArchivedListFragment
-
 }

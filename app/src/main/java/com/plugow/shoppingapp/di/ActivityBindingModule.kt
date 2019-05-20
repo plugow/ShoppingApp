@@ -1,8 +1,8 @@
 package com.plugow.shoppingapp.di
 
 import com.plugow.shoppingapp.di.scope.ActivityScoped
-import com.plugow.shoppingapp.ui.MainActivity
-import com.plugow.shoppingapp.ui.ShoppingListDetailActivity
+import com.plugow.shoppingapp.ui.activity.MainActivity
+import com.plugow.shoppingapp.ui.activity.ShoppingListDetailActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

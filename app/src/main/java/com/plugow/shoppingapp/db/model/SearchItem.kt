@@ -16,6 +16,4 @@ class SearchItem (
 
     @Column
     var isChosen:Boolean = false
-
-
 )

@@ -20,6 +20,4 @@ interface RefreshableList<T> {
     fun onRefreshItems(){
         loadItems()
     }
-
-
 }

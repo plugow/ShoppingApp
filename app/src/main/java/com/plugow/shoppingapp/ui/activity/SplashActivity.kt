@@ -1,4 +1,4 @@
-package com.plugow.shoppingapp.ui
+package com.plugow.shoppingapp.ui.activity
 
 import android.app.Activity
 import android.os.Bundle

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.ShoppingList
-import com.plugow.shoppingapp.di.util.Event
+import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ClickType
@@ -20,7 +20,7 @@ import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class ShoppingListViewModel @Inject constructor(val repo: AppRepo, val ctx:Context): ViewModel(), RefreshableList<ShoppingList> {
+class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context): ViewModel(), RefreshableList<ShoppingList> {
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var currentItemId = 0

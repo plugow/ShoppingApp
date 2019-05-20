@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentShoppingListBinding
 import com.plugow.shoppingapp.event.ShoppingListEvent
-import com.plugow.shoppingapp.ui.ShoppingListDetailActivity
+import com.plugow.shoppingapp.ui.activity.ShoppingListDetailActivity
 import com.plugow.shoppingapp.ui.adapter.ShoppingListAdapter
 import com.plugow.shoppingapp.ui.dialog.NewListDialog
 import com.plugow.shoppingapp.viewModel.ShoppingListViewModel

@@ -1,4 +1,4 @@
-package com.plugow.shoppingapp.di.util
+package com.plugow.shoppingapp.util
 
 open class Event<out T>(private val content: T) {
 

@@ -1,4 +1,4 @@
-package com.plugow.shoppingapp.ui
+package com.plugow.shoppingapp.ui.activity
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
