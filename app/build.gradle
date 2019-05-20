@@ -65,6 +65,7 @@ dependencies {
 
     //mockito
     testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$kotlin_mockito_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$kotlin_mockito_version"

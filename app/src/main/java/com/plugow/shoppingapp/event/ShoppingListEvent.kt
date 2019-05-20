@@ -1,5 +1,6 @@
 package com.plugow.shoppingapp.event
 
 enum class ShoppingListEvent {
-    OnItemClick
+    ON_ITEM_CLICK,
+    ERROR
 }

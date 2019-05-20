@@ -21,6 +21,7 @@ import dagger.android.support.DaggerFragment
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.contentView
 import org.jetbrains.anko.support.v4.startActivity
+import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
 class ShoppingListFragment : DaggerFragment() {
@@ -53,8 +54,8 @@ class ShoppingListFragment : DaggerFragment() {
         mViewModel.initValues()
         mViewModel.event.observe(this, Observer {
             when(it.getContentIfNotHandled()){
-                ShoppingListEvent.OnItemClick -> {startActivity<ShoppingListDetailActivity>("id" to mViewModel.currentItem.id, "name" to mViewModel.currentItem.name)}
-                null -> {}
+                ShoppingListEvent.ON_ITEM_CLICK -> {startActivity<ShoppingListDetailActivity>("id" to mViewModel.currentItem.id, "name" to mViewModel.currentItem.name)}
+                ShoppingListEvent.ERROR -> toast(getString(R.string.wrong))
             }
         })
         return binding.root

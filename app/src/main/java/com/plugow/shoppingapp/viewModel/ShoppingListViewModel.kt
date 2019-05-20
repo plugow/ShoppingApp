@@ -40,7 +40,8 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
                 onSuccess = {
                     items.value = it
                     isLoadingRefresh.value = false
-                }
+                },
+                onError = {mEvent.value = Event(ShoppingListEvent.ERROR)}
             ).addTo(disposables)
     }
 
@@ -74,7 +75,7 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
         when(type){
             RecyclerClickType.MAIN -> {
                 currentItem = items.value?.get(pos)!!
-                mEvent.value = Event(ShoppingListEvent.OnItemClick)
+                mEvent.value = Event(ShoppingListEvent.ON_ITEM_CLICK)
             }
             RecyclerClickType.REMOVE -> {
                 items.value?.get(pos)?.delete()
