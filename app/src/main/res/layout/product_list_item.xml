@@ -16,6 +16,8 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
+            android:paddingBottom="@dimen/min_margin"
+            android:paddingTop="@dimen/min_margin"
             android:textColor="@color/grey"
             android:textSize="@dimen/text_size"
             android:id="@+id/title"
@@ -26,7 +28,7 @@
             app:layout_constraintTop_toTopOf="@+id/doneCheckBox"
             app:layout_constraintBottom_toBottomOf="@+id/doneCheckBox"
             app:layout_constraintEnd_toStartOf="@+id/amount"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="@dimen/min_margin"/>
 
     <ImageButton
             android:id="@+id/minusButton"
