@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.ShoppingList
+import com.plugow.shoppingapp.event.BusEvent
+import com.plugow.shoppingapp.event.RxBus
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ArchiveClickType
 import com.plugow.shoppingapp.ui.adapter.ClickType
@@ -14,9 +16,10 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class ArchivedListViewModel @Inject constructor(private val repo: AppRepo): ViewModel(), RefreshableList<ShoppingList>{
+class ArchivedListViewModel @Inject constructor(private val repo: AppRepo, private val rxBus: RxBus): ViewModel(), RefreshableList<ShoppingList>{
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var isAscending = false
@@ -30,6 +33,7 @@ class ArchivedListViewModel @Inject constructor(private val repo: AppRepo): View
             }
             ArchiveClickType.RESTORE -> {
                 items.value?.get(pos)?.update()
+                rxBus.emitEvent(BusEvent.RefreshShoppingLists)
             }
         }
     }
@@ -47,6 +51,17 @@ class ArchivedListViewModel @Inject constructor(private val repo: AppRepo): View
     override fun onCleared() {
         super.onCleared()
         disposables.clear()
+    }
+
+    override fun initValues(id: Int) {
+        super.initValues(id)
+        rxBus.getEventObservable()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .subscribe {
+                when (it) {
+                    is BusEvent.RefreshArchivedLists -> loadItems()
+                }
+            }.addTo(disposables)
     }
 
     fun sort() {

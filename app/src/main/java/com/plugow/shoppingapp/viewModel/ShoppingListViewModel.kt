@@ -20,6 +20,7 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context, private val rxBus: RxBus): ViewModel(), RefreshableList<ShoppingList> {
@@ -45,10 +46,13 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
 
     override fun initValues(id: Int) {
         super.initValues(id)
-        rxBus.getEventObservable().subscribe {
-            if (it is BusEvent.RefreshShoppingList){
-                refreshItem(it.shoppingListId)
-            }
+        rxBus.getEventObservable()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .subscribe {
+                when (it) {
+                    is BusEvent.RefreshShoppingList -> refreshItem(it.shoppingListId)
+                    is BusEvent.RefreshShoppingLists -> loadItems()
+                }
         }.addTo(disposables)
     }
 
@@ -77,6 +81,7 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
             }
             RecyclerClickType.ARCHIVE -> {
                 items.value?.get(pos)?.update()
+                rxBus.emitEvent(BusEvent.RefreshArchivedLists)
             }
         }
     }
@@ -99,7 +104,7 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
         }
     }
 
-    fun refreshItem(shoppingListId:Int){
+    private fun refreshItem(shoppingListId:Int){
         repo.getShoppingListById(shoppingListId)
             .subscribe {
                 val index = items.value?.indexOfFirst { it.id == shoppingListId }
