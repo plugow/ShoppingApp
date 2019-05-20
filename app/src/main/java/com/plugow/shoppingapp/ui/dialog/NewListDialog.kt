@@ -60,7 +60,7 @@ class NewListDialog(ui: AnkoContext<View>) {
 
                     }
                 }
-            }.apply { isCancelable=false }.show()
+            }.show()
 
             if (pDialog is AlertDialog){
                 (pDialog as? AlertDialog)?.window?.decorView?.backgroundColor = Color.TRANSPARENT

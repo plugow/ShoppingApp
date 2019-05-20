@@ -3,7 +3,7 @@
                                    xmlns:app="http://schemas.android.com/apk/res-auto"
                                    android:id="@+id/deliveryListItemCardView"
                                    android:layout_width="match_parent"
-                                   android:layout_height="@dimen/tile_height"
+                                   android:layout_height="wrap_content"
                                    android:background="@android:color/white"
                                    android:layout_marginStart="@dimen/base_margin"
                                    android:layout_marginEnd="@dimen/base_margin"
@@ -12,26 +12,32 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:minHeight="@dimen/tile_height"
+        android:layout_height="wrap_content">
 
         <TextView
+                app:layout_constraintVertical_bias="0"
+                app:layout_constraintHeight_default="wrap"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size"
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="@dimen/base_margin"
-                android:layout_marginTop="@dimen/base_margin"
                 app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="@dimen/base_margin"
+                app:layout_constraintEnd_toStartOf="@+id/contextMenu"
+                app:layout_constraintBottom_toTopOf="@+id/shoppingProgress"
+                android:layout_marginBottom="@dimen/min_margin"
+                android:layout_marginTop="@dimen/base_margin"
                 app:layout_constraintTop_toTopOf="parent"/>
 
         <ProgressBar
-                android:progress="50"
                 android:progressTint="@color/colorAccent"
                 android:progressBackgroundTint="@color/lightAccent"
                 android:indeterminate="false"
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="@dimen/progress_height"
                 style="?android:attr/progressBarStyleHorizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/base_margin"
@@ -42,14 +48,14 @@
                 android:id="@+id/shoppingProgress"/>
 
         <TextView
-                android:textSize="20sp"
+                android:textSize="@dimen/text_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/shoppingResult"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/base_margin"
                 app:layout_constraintEnd_toEndOf="@+id/contextMenu"
-                android:layout_marginEnd="32dp"/>
+                android:layout_marginEnd="@dimen/base_margin_2"/>
 
         <ImageButton
                 android:background="@drawable/context_menu_background"
@@ -57,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/contextMenu"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/base_margin"
                 app:layout_constraintTop_toTopOf="@+id/shoppingResult"
                 app:layout_constraintBottom_toBottomOf="@+id/shoppingResult"/>
 

@@ -69,7 +69,6 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        isCancelable=false
         dialog?.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, 500.dpToPxl())
         dialog?.window?.decorView?.backgroundColor = Color.TRANSPARENT
     }

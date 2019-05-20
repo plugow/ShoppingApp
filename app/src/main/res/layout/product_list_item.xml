@@ -19,12 +19,14 @@
             android:textColor="@color/grey"
             android:textSize="@dimen/text_size"
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/doneCheckBox"
             android:layout_marginStart="@dimen/base_margin"
             app:layout_constraintTop_toTopOf="@+id/doneCheckBox"
-            app:layout_constraintBottom_toBottomOf="@+id/doneCheckBox"/>
+            app:layout_constraintBottom_toBottomOf="@+id/doneCheckBox"
+            app:layout_constraintEnd_toStartOf="@+id/amount"
+            android:layout_marginEnd="8dp"/>
 
     <ImageButton
             android:id="@+id/minusButton"

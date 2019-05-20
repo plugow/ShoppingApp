@@ -39,7 +39,7 @@
                     android:clipToPadding="false"
                     app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
                     android:paddingTop="@dimen/base_margin"
-                    android:paddingBottom="@dimen/base_margin"
+                    android:paddingBottom="@dimen/list_bottom_padding"
                     android:id="@+id/list"
                     app:data="@{viewModel.items}"
                     android:layout_width="match_parent"
