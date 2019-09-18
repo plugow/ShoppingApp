@@ -38,7 +38,7 @@ object Versions {
     const val rxjava_version = "2.1.16"
     const val rxandroid_version = "2.0.2"
     const val rxkotlin_version = "2.2.0"
-    const val dagger_version = "2.16"
+    const val dagger_version = "2.24"
     const val android_binding = "2.2.0-alpha01"
     const val mockito_version = "2.27.0"
     const val kotlin_mockito_version = "2.1.0"

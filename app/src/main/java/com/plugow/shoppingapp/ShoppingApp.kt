@@ -11,7 +11,7 @@ import dagger.android.support.DaggerApplication
 
 class ShoppingApp : DaggerApplication() {
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
-        DaggerAppComponent.builder().application(this).build()
+        DaggerAppComponent.factory().create(this)
 
     override fun onCreate() {
         super.onCreate()
