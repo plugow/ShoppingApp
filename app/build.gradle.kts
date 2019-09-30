@@ -14,6 +14,14 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = mapOf("room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true")
+            }
+        }
     }
     buildTypes {
         getByName("release") {
@@ -43,6 +51,7 @@ object Versions {
     const val mockito_version = "2.27.0"
     const val kotlin_mockito_version = "2.1.0"
     const val mockk_version = "1.9.2"
+    const val room_version = "2.2.0-rc01"
 }
 
 dependencies {
@@ -94,11 +103,16 @@ dependencies {
     androidTestImplementation("android.arch.core:core-testing:${Versions.android_binding}")
 
     //dbflow
-    kapt("com.github.Raizlabs.DBFlow:dbflow-processor:${Versions.dbflow_version}")
-    implementation("com.github.Raizlabs.DBFlow:dbflow-core:${Versions.dbflow_version}")
-    implementation("com.github.Raizlabs.DBFlow:dbflow:${Versions.dbflow_version}")
-    implementation("com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${Versions.dbflow_version}")
-    implementation("com.github.Raizlabs.DBFlow:dbflow-rx2:${Versions.dbflow_version}")
-    implementation("com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${Versions.dbflow_version}")
+//    kapt("com.github.Raizlabs.DBFlow:dbflow-processor:${Versions.dbflow_version}")
+//    implementation("com.github.Raizlabs.DBFlow:dbflow-core:${Versions.dbflow_version}")
+//    implementation("com.github.Raizlabs.DBFlow:dbflow:${Versions.dbflow_version}")
+//    implementation("com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${Versions.dbflow_version}")
+//    implementation("com.github.Raizlabs.DBFlow:dbflow-rx2:${Versions.dbflow_version}")
+//    implementation("com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${Versions.dbflow_version}")
+
+    //room
+    implementation("androidx.room:room-runtime:${Versions.room_version}")
+    implementation("androidx.room:room-rxjava2:${Versions.room_version}")
+    kapt("androidx.room:room-compiler:${Versions.room_version}")
 
 }

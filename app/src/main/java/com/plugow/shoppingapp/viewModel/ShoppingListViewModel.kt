@@ -37,7 +37,7 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
     override fun loadItems() {
         repo.getShoppingList()
             .subscribeBy(
-                onSuccess = {
+                onNext = {
                     items.value = it
                     isLoadingRefresh.value = false
                 },
@@ -65,7 +65,7 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
     fun addList(text: String) {
         val name = if (text=="") ctx.getString(R.string.new_list) else text
         val newList = ShoppingList(name = name)
-        newList.save()
+        repo.insertList(newList)
         val temp = items.value?.toMutableList()
         temp?.add(0,newList)
         items.value = temp
@@ -78,10 +78,10 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
                 mEvent.value = Event(ShoppingListEvent.ON_ITEM_CLICK)
             }
             RecyclerClickType.REMOVE -> {
-                items.value?.get(pos)?.delete()
+                items.value?.get(pos)?.let { repo.deleteList(it) }
             }
             RecyclerClickType.ARCHIVE -> {
-                items.value?.get(pos)?.update()
+                items.value?.get(pos)?.let { repo.updateList(it) }
                 rxBus.emitEvent(BusEvent.RefreshArchivedLists)
             }
         }
@@ -109,15 +109,16 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
 
     private fun refreshItem(shoppingListId:Int){
         repo.getShoppingListById(shoppingListId)
-            .subscribe {
-                val index = items.value?.indexOfFirst { it.id == shoppingListId }
-                index?.let {i ->
-                    val temp = items.value as MutableList
-                    temp[i] = it
-                    items.postValue(temp)
+            .subscribeBy(
+                onNext = {
+                    val index = items.value?.indexOfFirst { it.id == shoppingListId }
+                    index?.let {i ->
+                        val temp = items.value as MutableList
+                        temp[i] = it
+                        items.postValue(temp)
+                    }
                 }
-
-            }.addTo(disposables)
+            ).addTo(disposables)
     }
 
 

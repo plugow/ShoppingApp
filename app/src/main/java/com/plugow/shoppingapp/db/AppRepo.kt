@@ -1,59 +1,90 @@
 package com.plugow.shoppingapp.db
 
+import com.plugow.shoppingapp.db.dao.ProductDao
+import com.plugow.shoppingapp.db.dao.SearchItemDao
+import com.plugow.shoppingapp.db.dao.ShoppingListDao
 import com.plugow.shoppingapp.db.model.*
-import com.raizlabs.android.dbflow.kotlinextensions.*
-import com.raizlabs.android.dbflow.rx2.kotlinextensions.rx
-import com.raizlabs.android.dbflow.sql.language.OrderBy
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
 
-class AppRepo {
+class AppRepo(
+    private val productsDao: ProductDao,
+    private val listDao: ShoppingListDao,
+    private val itemsDao: SearchItemDao
+) {
     fun getSearchItems() =
-            (select from SearchItem::class)
-                .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        itemsDao.getItems()
 
-    fun addProducts(items:List<SearchItem>, shoppingListId:Int) =
+    fun addProducts(items: List<SearchItem>, shoppingListId: Int) =
         items.toObservable()
-            .doOnNext { Product(name = it.name, shoppingListId = shoppingListId).save() }
+            .map { Product(name = it.name, shoppingListId = shoppingListId) }
             .toList()
+            .flatMapCompletable {
+                productsDao.bulbInsert(it)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getProductById(shoppingListId: Int) =
-        (select from Product::class where Product_Table.shopping_list_id.eq(shoppingListId))
-            .rx().queryList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    fun getProductsById(shoppingListId: Int) =
+        productsDao.getProductsByList(shoppingListId).subscribeOn(Schedulers.io()).observeOn(
+            AndroidSchedulers.mainThread()
+        )
+
+    fun updateProduct(product: Product) {
+        productsDao.update(product)
+    }
+
+    fun deleteProduct(product: Product) {
+        productsDao.delete(product)
+    }
+
+    fun updateList(list: ShoppingList) {
+        listDao.update(list)
+    }
+
+    fun deleteList(list: ShoppingList) {
+        listDao.delete(list)
+    }
+
+    fun insertList(list: ShoppingList) {
+        listDao.insert(list)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+    }
 
     fun getShoppingList() =
-        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(false))
-            .orderBy(ShoppingList_Table.createdAt, false)
-            .rx().queryList()
-            .flattenAsObservable { it }
-            .flatMap { fillShoppingList(it).subscribeOn(Schedulers.io()) }
-            .toList()
+        listDao.getListsWithProducts()
+            .flatMap {
+                Observable.fromIterable(it)
+                    .map { fillShoppingList(it) }
+                    .toList().toObservable()
+            }
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
     fun getArchivedList() =
-        (select from ShoppingList::class where ShoppingList_Table.isArchived.eq(true))
-            .orderBy(ShoppingList_Table.createdAt, false)
-            .rx().queryList()
-            .flattenAsObservable { it }
-            .flatMap { fillShoppingList(it).subscribeOn(Schedulers.io()) }
-            .toList()
+        listDao.getArchivedListsWithProducts()
+            .flatMap {
+                Observable.fromIterable(it)
+                    .map { fillShoppingList(it) }.toList().toObservable()
+            }
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-    private fun fillShoppingList(shoppingList:ShoppingList):Observable<ShoppingList>{
-        shoppingList.productsAmount = shoppingList.products?.size ?: 0
-        shoppingList.doneAmount = shoppingList.products?.filter { it.isDone }?.size ?: 0
-        return  Observable.just(shoppingList)
+    private fun fillShoppingList(shoppingListWithProducts: ShoppingListWithProducts): ShoppingList {
+        shoppingListWithProducts.shoppingList?.productsAmount =
+            shoppingListWithProducts.products.size
+        shoppingListWithProducts.shoppingList?.doneAmount =
+            shoppingListWithProducts.products.filter { it.isDone }.size
+        return shoppingListWithProducts.shoppingList!!
     }
 
+
     fun getShoppingListById(shoppingListId: Int) =
-        (select from ShoppingList::class where ShoppingList_Table.id.eq(shoppingListId))
-            .rx().querySingle()
+        listDao.getListById(shoppingListId)
             .toObservable()
-            .flatMap { fillShoppingList(it) }
+            .map { fillShoppingList(it) }
             .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
 
 }

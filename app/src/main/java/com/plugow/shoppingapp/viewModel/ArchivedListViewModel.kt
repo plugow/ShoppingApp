@@ -29,10 +29,11 @@ class ArchivedListViewModel @Inject constructor(private val repo: AppRepo, priva
     override fun onRecyclerClick(type: ClickType, pos: Int) {
         when(type){
             ArchiveClickType.REMOVE -> {
-                items.value?.get(pos)?.delete()
+
+                items.value?.get(pos)?.let { repo.deleteList(it) }
             }
             ArchiveClickType.RESTORE -> {
-                items.value?.get(pos)?.update()
+                items.value?.get(pos)?.let { repo.updateList(it) }
                 rxBus.emitEvent(BusEvent.RefreshShoppingLists)
             }
         }
@@ -41,11 +42,12 @@ class ArchivedListViewModel @Inject constructor(private val repo: AppRepo, priva
     override fun loadItems() {
         repo.getArchivedList()
             .subscribeBy(
-                onSuccess = {
+                onNext = {
                     items.value = it
                     isLoadingRefresh.value = false
                 }
             ).addTo(disposables)
+
     }
 
     override fun onCleared() {

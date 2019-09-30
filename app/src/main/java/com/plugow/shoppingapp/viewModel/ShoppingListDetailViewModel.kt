@@ -11,8 +11,6 @@ import com.plugow.shoppingapp.event.RxBus
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.*
-import com.raizlabs.android.dbflow.kotlinextensions.delete
-import com.raizlabs.android.dbflow.kotlinextensions.update
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -35,9 +33,9 @@ class ShoppingListDetailViewModel @Inject constructor(private val repo: AppRepo,
     }
 
     override fun loadItems() {
-        repo.getProductById(shoppingListId)
+        repo.getProductsById(shoppingListId)
             .subscribeBy(
-                onSuccess = {
+                onNext = {
                     items.value = it
                     isLoadingRefresh.value=false
                 }
@@ -61,15 +59,15 @@ class ShoppingListDetailViewModel @Inject constructor(private val repo: AppRepo,
 
     override fun onRecyclerClick(type:ClickType, pos:Int){
         when(type){
-            ProductClickType.ADD -> items.value?.get(pos)?.update()
+            ProductClickType.ADD -> items.value?.get(pos)?.let { repo.updateProduct(it) }
             ProductClickType.SUBSTRACT -> {
                 if (items.value?.get(pos)?.amount!! == 1){
-                    items.value?.get(pos)?.delete()
+                    items.value?.get(pos)?.let { repo.deleteProduct(it) }
                 } else {
-                    items.value?.get(pos)?.update()
+                    items.value?.get(pos)?.let { repo.updateProduct(it) }
                 }
             }
-            ProductClickType.CHECK -> items.value?.get(pos)?.update()
+            ProductClickType.CHECK -> items.value?.get(pos)?.let { repo.updateProduct(it) }
         }
         rxBus.emitEvent(BusEvent.RefreshShoppingList(shoppingListId))
     }

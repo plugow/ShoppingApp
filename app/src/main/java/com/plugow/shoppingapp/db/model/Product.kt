@@ -1,26 +1,18 @@
 package com.plugow.shoppingapp.db.model
 
-import com.plugow.shoppingapp.db.AppDB
-import com.raizlabs.android.dbflow.annotation.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
 
-@Table(database = AppDB::class)
+@Entity(tableName = "products", foreignKeys = [ForeignKey(entity = ShoppingList::class, parentColumns = ["id"], childColumns = ["shoppingListId"], onDelete = CASCADE)])
 class Product (
-    @PrimaryKey(autoincrement = true)
-    @Column
-    var id:Int=-1,
+    @PrimaryKey(autoGenerate = true) var id:Int=0,
 
-    @Column
     var name:String="",
-
-    @Column
     var amount:Int = 1,
-
-    @Column
     var isDone:Boolean = false,
-
-    @Column
-    @ForeignKey(tableClass = ShoppingList::class, references = [ForeignKeyReference(
-        columnName = "shopping_list_id", foreignKeyColumnName = "id")])
-    var shoppingListId:Int?=null
-
+    @ColumnInfo(name = "shoppingListId", index = true)
+    var shoppingListId:Int = -1
 )

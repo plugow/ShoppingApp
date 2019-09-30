@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.AppRepo
+import com.plugow.shoppingapp.db.dao.ProductDao
+import com.plugow.shoppingapp.db.dao.SearchItemDao
 import com.plugow.shoppingapp.db.model.SearchItem
 import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.BusEvent
@@ -13,6 +15,7 @@ import com.plugow.shoppingapp.event.RxBus
 import com.plugow.shoppingapp.event.SearchEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
@@ -22,7 +25,7 @@ import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context, private val rxBus: RxBus) : ViewModel(), RefreshableList<SearchItem> {
+class SearchViewModel @Inject constructor(private val itemsDao: SearchItemDao,private val repo: AppRepo, private val productDao: ProductDao, private val ctx:Context, private val rxBus: RxBus) : ViewModel(), RefreshableList<SearchItem> {
     override var items: MutableLiveData<List<SearchItem>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var customItemVisibility = MutableLiveData(false)
@@ -43,12 +46,17 @@ class SearchViewModel @Inject constructor(private val repo: AppRepo, private val
     }
 
     override fun loadItems() {
-        repo.getSearchItems()
+        itemsDao.getItems()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
                     mItems = it
                     items.value = mItems
                     isLoadingRefresh.value = false
+                },
+                onError = {
+                    it.printStackTrace()
                 }
             ).addTo(disposables)
     }
@@ -86,7 +94,7 @@ class SearchViewModel @Inject constructor(private val repo: AppRepo, private val
         if (selectedItems.size!=0){
             repo.addProducts(selectedItems, shoppingListId)
                 .subscribeBy(
-                    onSuccess = {
+                    onComplete = {
                         mEvent.value = Event(SearchEvent.DISMISS)
                         rxBus.emitEvent(BusEvent.RefreshProducts)
                     },

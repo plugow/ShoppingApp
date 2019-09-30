@@ -1,77 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                   android:id="@+id/deliveryListItemCardView"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="wrap_content"
-                                   android:background="@android:color/white"
-                                   android:layout_marginStart="@dimen/base_margin"
-                                   android:layout_marginEnd="@dimen/base_margin"
-                                   android:layout_marginBottom="@dimen/min_margin"
-                                   app:layout_constraintBottom_toBottomOf="parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/deliveryListItemCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/base_margin"
+    android:layout_marginEnd="@dimen/base_margin"
+    android:layout_marginBottom="@dimen/min_margin"
+    android:background="@android:color/white"
+    app:layout_constraintBottom_toBottomOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:minHeight="@dimen/tile_height"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/tile_height">
 
         <TextView
-                android:gravity="fill"
-                app:layout_constraintVertical_bias="0"
-                app:layout_constrainedHeight="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size"
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/base_margin"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginEnd="@dimen/base_margin"
-                app:layout_constraintEnd_toStartOf="@+id/contextMenu"
-                app:layout_constraintBottom_toTopOf="@+id/shoppingProgress"
-                android:layout_marginBottom="@dimen/min_margin"
-                android:layout_marginTop="@dimen/base_margin"
-                app:layout_constraintTop_toTopOf="parent"/>
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_margin"
+            android:layout_marginTop="@dimen/base_margin"
+            android:layout_marginEnd="@dimen/base_margin"
+            android:layout_marginBottom="@dimen/min_margin"
+            android:gravity="fill"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size"
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toTopOf="@+id/shoppingProgress"
+            app:layout_constraintEnd_toStartOf="@+id/contextMenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0" />
 
         <ProgressBar
-                android:progressTint="@color/colorAccent"
-                android:progressBackgroundTint="@color/lightAccent"
-                android:indeterminate="false"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/progress_height"
-                style="?android:attr/progressBarStyleHorizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="@dimen/base_margin"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/base_margin"
-                android:layout_marginEnd="@dimen/base_margin"
-                android:id="@+id/shoppingProgress"/>
+            android:id="@+id/shoppingProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/progress_height"
+            android:layout_marginStart="@dimen/base_margin"
+            android:layout_marginEnd="@dimen/base_margin"
+            android:layout_marginBottom="@dimen/base_margin"
+            android:indeterminate="false"
+            android:progressBackgroundTint="@color/lightAccent"
+            android:progressTint="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-                android:textSize="@dimen/text_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/shoppingResult"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="@dimen/base_margin"
-                app:layout_constraintEnd_toEndOf="@+id/contextMenu"
-                android:layout_marginEnd="@dimen/base_margin_2"/>
+            android:id="@+id/shoppingResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/base_margin"
+            android:layout_marginEnd="@dimen/base_margin_2"
+            android:textSize="@dimen/text_size"
+            app:layout_constraintEnd_toEndOf="@+id/contextMenu"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-                android:background="@drawable/context_menu_background"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/contextMenu"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/base_margin"
-                app:layout_constraintTop_toTopOf="@+id/shoppingResult"
-                app:layout_constraintBottom_toBottomOf="@+id/shoppingResult"/>
+            android:id="@+id/contextMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/base_margin"
+            android:background="@drawable/context_menu_background"
+            app:layout_constraintBottom_toBottomOf="@+id/shoppingResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/shoppingResult" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </androidx.cardview.widget.CardView>
 

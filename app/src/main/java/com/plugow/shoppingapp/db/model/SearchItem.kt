@@ -1,19 +1,14 @@
 package com.plugow.shoppingapp.db.model
 
-import com.plugow.shoppingapp.db.AppDB
-import com.raizlabs.android.dbflow.annotation.Column
-import com.raizlabs.android.dbflow.annotation.PrimaryKey
-import com.raizlabs.android.dbflow.annotation.Table
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Table(database = AppDB::class)
+@Entity(tableName = "searchItems")
 class SearchItem (
-    @PrimaryKey(autoincrement = true)
-    @Column
-    var id:Int=-1,
-
-    @Column
+    @PrimaryKey(autoGenerate = true)
+    var id:Int=0,
     var name:String="",
-
-    @Column
+    @ColumnInfo(defaultValue = "0")
     var isChosen:Boolean = false
 )

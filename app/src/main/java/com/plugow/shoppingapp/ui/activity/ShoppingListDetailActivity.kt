@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_shopping_list_detail.view.*
 import javax.inject.Inject
 
 class ShoppingListDetailActivity : DaggerAppCompatActivity() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject internal lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: ShoppingListDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
         val mAdapter = ShoppingListDetailAdapter()
         val id = intent.getIntExtra("id", 0)
         val name = intent.getStringExtra("name")
-        DataBindingUtil.setContentView<ActivityShoppingListDetailBinding>(this, R.layout.activity_shopping_list_detail).apply {
+        DataBindingUtil.setContentView<ActivityShoppingListDetailBinding>(this, R.layout.activity_shopping_list_detail).run {
             lifecycleOwner = this@ShoppingListDetailActivity
             viewModel = mViewModel
             list.adapter = mAdapter
@@ -39,7 +39,7 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
         }
         mViewModel.initValues(id)
         setSupportActionBar(detailToolbar)
-        supportActionBar?.apply {
+        supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
             title =name
