@@ -40,20 +40,12 @@ class AppRepo(
         productsDao.delete(product)
     }
 
-    fun updateList(list: ShoppingList) {
-        listDao.update(list)
-    }
+    fun updateList(list: ShoppingList) = listDao.update(list)
 
-    fun deleteList(list: ShoppingList) {
-        listDao.delete(list)
-    }
+    fun deleteList(list: ShoppingList) = listDao.delete(list)
 
-    fun insertList(list: ShoppingList) {
+    fun insertList(list: ShoppingList) =
         listDao.insert(list)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe()
-    }
 
     fun getShoppingList() =
         listDao.getListsWithProducts()

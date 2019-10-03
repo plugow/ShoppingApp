@@ -7,6 +7,8 @@ import com.plugow.shoppingapp.db.dao.ProductDao
 import com.plugow.shoppingapp.db.dao.SearchItemDao
 import com.plugow.shoppingapp.db.dao.ShoppingListDao
 import com.plugow.shoppingapp.event.RxBus
+import com.plugow.shoppingapp.util.AppSchedulerProvider
+import com.plugow.shoppingapp.util.SchedulerProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -17,6 +19,9 @@ import javax.inject.Singleton
 abstract class AppModule {
     @Binds
     abstract fun bindContext(application: Application): Context
+
+    @Binds
+    abstract fun appSchedulerProvider(schedulerProvider: AppSchedulerProvider) : SchedulerProvider
 
     @Module
     companion object {

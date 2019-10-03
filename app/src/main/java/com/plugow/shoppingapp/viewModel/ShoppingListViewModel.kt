@@ -1,88 +1,71 @@
 package com.plugow.shoppingapp.viewModel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.plugow.shoppingapp.R
-import com.plugow.shoppingapp.db.AppRepo
 import com.plugow.shoppingapp.db.model.ShoppingList
-import com.plugow.shoppingapp.event.BusEvent
-import com.plugow.shoppingapp.event.RxBus
+import com.plugow.shoppingapp.domain.*
 import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ClickType
 import com.plugow.shoppingapp.ui.adapter.RecyclerClickType
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, private val ctx:Context, private val rxBus: RxBus): ViewModel(), RefreshableList<ShoppingList> {
+class ShoppingListViewModel @Inject constructor(
+    private val deleteListUseCase: DeleteListUseCase,
+    private val updateListUseCase: UpdateListUseCase,
+    private val sortListUseCase: SortListUseCase,
+    private val getShoppingListUseCase: GetShoppingListUseCase,
+    private val addListUseCase: AddListUseCase
+) : ViewModel(), RefreshableList<ShoppingList> {
+
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
-    lateinit var currentItem:ShoppingList
-    private val disposables= CompositeDisposable()
-    private val mEvent:MutableLiveData<Event<ShoppingListEvent>> = MutableLiveData()
-    val event : LiveData<Event<ShoppingListEvent>>
+    lateinit var currentItem: ShoppingList
+    private val mEvent: MutableLiveData<Event<ShoppingListEvent>> = MutableLiveData()
+    val event: LiveData<Event<ShoppingListEvent>>
         get() = mEvent
     var isAscending = false
 
 
     override fun loadItems() {
-        repo.getShoppingList()
-            .subscribeBy(
-                onNext = {
-                    items.value = it
-                    isLoadingRefresh.value = false
-                },
-                onError = {mEvent.value = Event(ShoppingListEvent.ERROR)}
-            ).addTo(disposables)
+        getShoppingListUseCase.execute(
+            onNext = {
+                items.value = it
+                isLoadingRefresh.value = false
+            },
+            onError = {
+                mEvent.value = Event(ShoppingListEvent.ERROR)
+            }
+        )
     }
 
-    override fun initValues(id: Int) {
-        super.initValues(id)
-        rxBus.getEventObservable()
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .subscribe {
-                when (it) {
-                    is BusEvent.RefreshShoppingList -> refreshItem(it.shoppingListId)
-                    is BusEvent.RefreshShoppingLists -> loadItems()
-                }
-        }.addTo(disposables)
-    }
 
     override fun onCleared() {
         super.onCleared()
-        disposables.clear()
+        deleteListUseCase.dispose()
+        updateListUseCase.dispose()
+        sortListUseCase.dispose()
+        getShoppingListUseCase.dispose()
+        addListUseCase.dispose()
     }
 
     fun addList(text: String) {
-        val name = if (text=="") ctx.getString(R.string.new_list) else text
-        val newList = ShoppingList(name = name)
-        repo.insertList(newList)
-        val temp = items.value?.toMutableList()
-        temp?.add(0,newList)
-        items.value = temp
+        addListUseCase.execute(params = text)
     }
 
-    override fun onRecyclerClick(type: ClickType, pos:Int){
-        when(type){
+    override fun onRecyclerClick(type: ClickType, pos: Int) {
+        when (type) {
             RecyclerClickType.MAIN -> {
                 currentItem = items.value?.get(pos)!!
                 mEvent.value = Event(ShoppingListEvent.ON_ITEM_CLICK)
             }
             RecyclerClickType.REMOVE -> {
-                items.value?.get(pos)?.let { repo.deleteList(it) }
+                deleteListUseCase.execute(params = items.value?.get(pos))
             }
             RecyclerClickType.ARCHIVE -> {
-                items.value?.get(pos)?.let { repo.updateList(it) }
-                rxBus.emitEvent(BusEvent.RefreshArchivedLists)
+                updateListUseCase.execute(params = items.value?.get(pos))
             }
         }
     }
@@ -90,35 +73,12 @@ class ShoppingListViewModel @Inject constructor(private val repo: AppRepo, priva
     fun sort() {
         items.value?.let { items ->
             isAscending = !isAscending
-            Single.fromCallable {
-                if (isAscending){
-                    items.toMutableList().sortedBy { it.createdAt }.toList()
-                } else {
-                    items.toMutableList().sortedByDescending { it.createdAt }.toList()
-                }
-            }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onSuccess = {sortedList ->
-                        this.items.value = sortedList
-                    }
-                ).addTo(disposables)
+            sortListUseCase.execute(
+                params = SortListUseCase.SortListParams(isAscending, items),
+                onSuccess = {
+                    this.items.value = it
+                })
         }
-    }
-
-    private fun refreshItem(shoppingListId:Int){
-        repo.getShoppingListById(shoppingListId)
-            .subscribeBy(
-                onNext = {
-                    val index = items.value?.indexOfFirst { it.id == shoppingListId }
-                    index?.let {i ->
-                        val temp = items.value as MutableList
-                        temp[i] = it
-                        items.postValue(temp)
-                    }
-                }
-            ).addTo(disposables)
     }
 
 
