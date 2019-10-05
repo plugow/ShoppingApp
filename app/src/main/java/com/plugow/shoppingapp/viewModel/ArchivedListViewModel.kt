@@ -3,7 +3,7 @@ package com.plugow.shoppingapp.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.plugow.shoppingapp.db.AppRepo
+import com.plugow.shoppingapp.db.LocalRepositoryImpl
 import com.plugow.shoppingapp.db.model.ShoppingList
 import com.plugow.shoppingapp.event.BusEvent
 import com.plugow.shoppingapp.event.RxBus
@@ -19,7 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class ArchivedListViewModel @Inject constructor(private val repo: AppRepo, private val rxBus: RxBus): ViewModel(), RefreshableList<ShoppingList>{
+class ArchivedListViewModel @Inject constructor(private val repo: LocalRepositoryImpl, private val rxBus: RxBus): ViewModel(), RefreshableList<ShoppingList>{
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var isAscending = false

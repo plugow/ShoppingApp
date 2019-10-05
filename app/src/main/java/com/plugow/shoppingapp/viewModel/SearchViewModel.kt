@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.R
-import com.plugow.shoppingapp.db.AppRepo
+import com.plugow.shoppingapp.db.LocalRepositoryImpl
 import com.plugow.shoppingapp.db.dao.ProductDao
 import com.plugow.shoppingapp.db.dao.SearchItemDao
 import com.plugow.shoppingapp.db.model.SearchItem
@@ -25,7 +25,7 @@ import org.jetbrains.anko.toast
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val itemsDao: SearchItemDao,private val repo: AppRepo, private val productDao: ProductDao, private val ctx:Context, private val rxBus: RxBus) : ViewModel(), RefreshableList<SearchItem> {
+class SearchViewModel @Inject constructor(private val itemsDao: SearchItemDao, private val repo: LocalRepositoryImpl, private val productDao: ProductDao, private val ctx:Context, private val rxBus: RxBus) : ViewModel(), RefreshableList<SearchItem> {
     override var items: MutableLiveData<List<SearchItem>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var customItemVisibility = MutableLiveData(false)

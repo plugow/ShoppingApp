@@ -4,20 +4,22 @@ import com.plugow.shoppingapp.db.dao.ProductDao
 import com.plugow.shoppingapp.db.dao.SearchItemDao
 import com.plugow.shoppingapp.db.dao.ShoppingListDao
 import com.plugow.shoppingapp.db.model.*
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.toObservable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class AppRepo(
+class LocalRepositoryImpl @Inject constructor(
     private val productsDao: ProductDao,
     private val listDao: ShoppingListDao,
     private val itemsDao: SearchItemDao
-) {
-    fun getSearchItems() =
+) : LocalRepository {
+    override fun getSearchItems() =
         itemsDao.getItems()
 
-    fun addProducts(items: List<SearchItem>, shoppingListId: Int) =
+    override fun addProducts(items: List<SearchItem>, shoppingListId: Int) =
         items.toObservable()
             .map { Product(name = it.name, shoppingListId = shoppingListId) }
             .toList()
@@ -27,27 +29,27 @@ class AppRepo(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun getProductsById(shoppingListId: Int) =
+    override fun getProductsById(shoppingListId: Int) =
         productsDao.getProductsByList(shoppingListId).subscribeOn(Schedulers.io()).observeOn(
             AndroidSchedulers.mainThread()
         )
 
-    fun updateProduct(product: Product) {
-        productsDao.update(product)
+    override fun updateProduct(product: Product): Completable {
+        return productsDao.update(product)
     }
 
-    fun deleteProduct(product: Product) {
-        productsDao.delete(product)
+    override fun deleteProduct(product: Product): Completable {
+        return productsDao.delete(product)
     }
 
-    fun updateList(list: ShoppingList) = listDao.update(list)
+    override fun updateList(list: ShoppingList) = listDao.update(list)
 
-    fun deleteList(list: ShoppingList) = listDao.delete(list)
+    override fun deleteList(list: ShoppingList) = listDao.delete(list)
 
-    fun insertList(list: ShoppingList) =
+    override fun insertList(list: ShoppingList) =
         listDao.insert(list)
 
-    fun getShoppingList() =
+    override fun getShoppingList() =
         listDao.getListsWithProducts()
             .flatMap {
                 Observable.fromIterable(it)
@@ -56,13 +58,20 @@ class AppRepo(
             }
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-    fun getArchivedList() =
+    override fun getArchivedList() =
         listDao.getArchivedListsWithProducts()
             .flatMap {
                 Observable.fromIterable(it)
                     .map { fillShoppingList(it) }.toList().toObservable()
             }
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+
+    override fun getShoppingListById(shoppingListId: Int) =
+        listDao.getListById(shoppingListId)
+            .map { fillShoppingList(it) }
+            .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
+
 
     private fun fillShoppingList(shoppingListWithProducts: ShoppingListWithProducts): ShoppingList {
         shoppingListWithProducts.shoppingList?.productsAmount =
@@ -72,11 +81,5 @@ class AppRepo(
         return shoppingListWithProducts.shoppingList!!
     }
 
-
-    fun getShoppingListById(shoppingListId: Int) =
-        listDao.getListById(shoppingListId)
-            .toObservable()
-            .map { fillShoppingList(it) }
-            .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
 
 }

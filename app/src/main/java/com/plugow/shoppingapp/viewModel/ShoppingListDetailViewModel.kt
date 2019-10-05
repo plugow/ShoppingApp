@@ -3,7 +3,7 @@ package com.plugow.shoppingapp.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.plugow.shoppingapp.db.AppRepo
+import com.plugow.shoppingapp.db.LocalRepositoryImpl
 import com.plugow.shoppingapp.db.model.Product
 import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.BusEvent
@@ -18,7 +18,7 @@ import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class ShoppingListDetailViewModel @Inject constructor(private val repo: AppRepo, private val rxBus: RxBus): ViewModel(), RefreshableList<Product> {
+class ShoppingListDetailViewModel @Inject constructor(private val repo: LocalRepositoryImpl, private val rxBus: RxBus): ViewModel(), RefreshableList<Product> {
     override var items: MutableLiveData<List<Product>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     private val disposables= CompositeDisposable()

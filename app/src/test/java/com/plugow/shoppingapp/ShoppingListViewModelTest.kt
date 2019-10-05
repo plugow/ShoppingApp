@@ -12,7 +12,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.plugow.shoppingapp.db.AppRepo
+import com.plugow.shoppingapp.db.LocalRepositoryImpl
 import com.plugow.shoppingapp.db.model.ShoppingList
 import com.plugow.shoppingapp.event.RxBus
 import com.plugow.shoppingapp.event.ShoppingListEvent
@@ -38,7 +38,7 @@ class ShoppingListViewModelTest {
     }
 
     @Mock
-    lateinit var repo: AppRepo
+    lateinit var repo: LocalRepositoryImpl
 
     @Mock
     lateinit var ctx: Context
