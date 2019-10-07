@@ -1,111 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
                 name="viewModel"
-                type="com.plugow.shoppingapp.viewModel.SearchViewModel"/>
-        <import type="android.view.View"/>
+                type="com.plugow.shoppingapp.viewModel.SearchViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:background="@drawable/dialog_background"
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/min_margin"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/dialog_background"
+            android:paddingBottom="@dimen/min_margin">
 
         <EditText
-                android:text="@={viewModel.searchBar}"
-                android:afterTextChanged="@{() -> viewModel.onSearchTextChanged()}"
-                android:hint="@string/add_product"
+                android:id="@+id/searchEditText"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/searchbar_height"
-                android:id="@+id/searchEditText"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/base_margin"
                 android:layout_marginTop="@dimen/min_margin"
+                android:layout_marginEnd="@dimen/min_margin"
+                app:textChanged="@{() -> viewModel.onSearchTextChanged()}"
+                android:hint="@string/add_product"
+                android:text="@={viewModel.searchBar}"
                 app:layout_constraintEnd_toStartOf="@+id/readyButton"
-                android:layout_marginEnd="@dimen/min_margin"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-                android:onClick="@{() -> viewModel.onReadyClick()}"
-                android:textSize="@dimen/text_size"
+                android:id="@+id/readyButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/min_margin"
+                android:layout_marginEnd="@dimen/base_margin"
+                android:layout_marginBottom="@dimen/min_margin"
+                android:onClick="@{() -> viewModel.onReadyClick()}"
                 android:text="@string/ready"
                 android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/text_size"
                 app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
-                android:layout_marginTop="@dimen/min_margin"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="@dimen/min_margin"
-                android:id="@+id/readyButton"
-                android:layout_marginEnd="@dimen/base_margin"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                app:isSelected="@{viewModel.isCustomItemSelected}"
-                android:onClick="@{() -> viewModel.onCustomItemClicked()}"
-                android:visibility="@{viewModel.customItemVisibility ? View.VISIBLE : View.GONE}"
                 android:id="@+id/customItem"
-                android:minHeight="@dimen/item_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/searchEditText"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:minHeight="@dimen/item_height"
+                android:onClick="@{() -> viewModel.onCustomItemClicked()}"
+                android:visibility="@{viewModel.customItemVisibility ? View.VISIBLE : View.GONE}"
+                app:isSelected="@{viewModel.isCustomItemSelected}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchEditText">
 
             <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/base_margin"
                     android:src="@drawable/baseline_add_circle_outline_black_24"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="@dimen/base_margin"
-                    android:id="@+id/imageView"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                    android:text="@{viewModel.searchBar}"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size"
                     android:id="@+id/title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
                     android:layout_marginStart="@dimen/base_margin"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginEnd="@dimen/base_margin"
+                    android:text="@{viewModel.searchBar}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="@dimen/base_margin"/>
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                    android:background="@color/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/barrier"
-                app:barrierDirection="bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="searchEditText,customItem"/>
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="searchEditText,customItem" />
 
 
         <androidx.recyclerview.widget.RecyclerView
-                android:clipToPadding="true"
-                android:paddingBottom="@dimen/min_margin"
-                app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
                 android:id="@+id/list"
-                app:data="@{viewModel.items}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/barrier"/>
+                android:clipToPadding="true"
+                android:paddingBottom="@dimen/min_margin"
+                app:data="@{viewModel.items}"
+                app:layout_constraintTop_toBottomOf="@+id/barrier"
+                app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

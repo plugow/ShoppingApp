@@ -52,6 +52,7 @@ object Versions {
     const val kotlin_mockito_version = "2.1.0"
     const val mockk_version = "1.9.2"
     const val room_version = "2.2.0-rc01"
+    const val rxbindings_version = "3.0.0"
 }
 
 dependencies {
@@ -91,6 +92,7 @@ dependencies {
     implementation("io.reactivex.rxjava2:rxandroid:${Versions.rxandroid_version}")
     implementation("io.reactivex.rxjava2:rxjava:${Versions.rxjava_version}")
     implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin_version}")
+    implementation("com.jakewharton.rxbinding3:rxbinding:${Versions.rxbindings_version}")
 
     //anko
     implementation("org.jetbrains.anko:anko:${Versions.anko_version}")
@@ -101,14 +103,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:${Versions.android_binding}")
     testImplementation("android.arch.core:core-testing:${Versions.android_binding}")
     androidTestImplementation("android.arch.core:core-testing:${Versions.android_binding}")
-
-    //dbflow
-//    kapt("com.github.Raizlabs.DBFlow:dbflow-processor:${Versions.dbflow_version}")
-//    implementation("com.github.Raizlabs.DBFlow:dbflow-core:${Versions.dbflow_version}")
-//    implementation("com.github.Raizlabs.DBFlow:dbflow:${Versions.dbflow_version}")
-//    implementation("com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${Versions.dbflow_version}")
-//    implementation("com.github.Raizlabs.DBFlow:dbflow-rx2:${Versions.dbflow_version}")
-//    implementation("com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${Versions.dbflow_version}")
 
     //room
     implementation("androidx.room:room-runtime:${Versions.room_version}")

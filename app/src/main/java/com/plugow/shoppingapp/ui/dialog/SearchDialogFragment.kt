@@ -19,24 +19,37 @@ import org.jetbrains.anko.backgroundColor
 import javax.inject.Inject
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.plugow.shoppingapp.event.SearchEvent
+import com.plugow.shoppingapp.util.SearchBindingComponent
 import com.plugow.shoppingapp.viewModel.SearchViewModel
 
 
 class SearchDialogFragment : DaggerAppCompatDialogFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var mViewModel:SearchViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var mViewModel: SearchViewModel
+
     companion object {
-        fun newInstance(shoppingListId:Int) : SearchDialogFragment = SearchDialogFragment().apply {
+        fun newInstance(shoppingListId: Int): SearchDialogFragment = SearchDialogFragment().apply {
             arguments = Bundle().apply { putInt("id", shoppingListId) }
         }
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val mAdapter = SearchAdapter()
-        val binding =DataBindingUtil.inflate<FragmentSearchDialogBinding>(layoutInflater,  R.layout.fragment_search_dialog, container, true).apply {
+        val binding = DataBindingUtil.inflate<FragmentSearchDialogBinding>(
+            layoutInflater,
+            R.layout.fragment_search_dialog,
+            container,
+            true,
+            SearchBindingComponent(lifecycle)
+        ).apply {
             lifecycleOwner = this@SearchDialogFragment
-            viewModel=mViewModel
+            viewModel = mViewModel
             list.adapter = mAdapter
             list.layoutManager = LinearLayoutManager(context)
             list.addItemDecoration(
@@ -46,12 +59,15 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
                 dismiss()
             }
         }
-        binding.viewModel=mViewModel
+        binding.viewModel = mViewModel
         mViewModel.initValues()
         mViewModel.event.observe(this, Observer {
-            when(it.getContentIfNotHandled()){
-                SearchEvent.DISMISS -> {dismiss()}
-                null -> {}
+            when (it.getContentIfNotHandled()) {
+                SearchEvent.DISMISS -> {
+                    dismiss()
+                }
+                null -> {
+                }
             }
         })
 
@@ -62,7 +78,8 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
-            ViewModelProviders.of(this@SearchDialogFragment, viewModelFactory).get(SearchViewModel::class.java)
+            ViewModelProviders.of(this@SearchDialogFragment, viewModelFactory)
+                .get(SearchViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         mViewModel.shoppingListId = arguments!!.getInt("id", 0)
     }
@@ -73,7 +90,7 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
         dialog?.window?.decorView?.backgroundColor = Color.TRANSPARENT
     }
 
-    private fun Int.dpToPxl():Int  {
+    private fun Int.dpToPxl(): Int {
         val scale = resources.displayMetrics.density
         return (this * scale + 0.5f).toInt()
     }

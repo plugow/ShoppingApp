@@ -4,12 +4,11 @@ import com.plugow.shoppingapp.db.model.Product
 import com.plugow.shoppingapp.db.model.SearchItem
 import com.plugow.shoppingapp.db.model.ShoppingList
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 
 interface LocalRepository {
-    fun getSearchItems() : Maybe<List<SearchItem>>
+    fun getSearchItems() : Single<List<SearchItem>>
 
     fun addProducts(items: List<SearchItem>, shoppingListId: Int): Completable
 
