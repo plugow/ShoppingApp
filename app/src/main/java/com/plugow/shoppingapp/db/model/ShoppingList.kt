@@ -6,7 +6,7 @@ import java.util.*
 
 
 @Entity(tableName = "shoppingLists")
-class ShoppingList(
+data class ShoppingList(
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0,
     var name:String = "",

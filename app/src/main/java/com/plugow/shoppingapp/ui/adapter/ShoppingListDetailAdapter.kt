@@ -10,6 +10,14 @@ import org.jetbrains.anko.backgroundColorResource
 
 
 class ShoppingListDetailAdapter : BaseAdapter<Product>() {
+    override fun setData(items: List<Product>) {
+        val oldItems = values
+        values = items as ArrayList<Product>
+        autoNotify(oldItems, values) { oldItem, newItem ->
+            oldItem.id == newItem.id
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
         return ShoppingListDetailViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false))
     }

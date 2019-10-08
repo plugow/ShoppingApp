@@ -7,7 +7,7 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "products", foreignKeys = [ForeignKey(entity = ShoppingList::class, parentColumns = ["id"], childColumns = ["shoppingListId"], onDelete = CASCADE)])
-class Product (
+data class Product (
     @PrimaryKey(autoGenerate = true) var id:Int=0,
 
     var name:String="",

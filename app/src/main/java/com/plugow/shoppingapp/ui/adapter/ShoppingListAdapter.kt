@@ -11,6 +11,13 @@ import kotlinx.android.synthetic.main.shopping_list_item.*
 
 
 class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
+    override fun setData(items: List<ShoppingList>) {
+        val oldItems = values
+        values = items as ArrayList<ShoppingList>
+        autoNotify(oldItems, values) { oldItem, newItem ->
+            oldItem.id == newItem.id
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ShoppingList> {
         return ShoppingListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.shopping_list_item, parent, false))
