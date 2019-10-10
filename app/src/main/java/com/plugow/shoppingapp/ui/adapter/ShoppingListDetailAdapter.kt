@@ -3,19 +3,24 @@ package com.plugow.shoppingapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.Product
 import kotlinx.android.synthetic.main.product_list_item.*
 import org.jetbrains.anko.backgroundColorResource
+import kotlin.properties.Delegates
 
 
-class ShoppingListDetailAdapter : BaseAdapter<Product>() {
+class ShoppingListDetailAdapter : RecyclerView.Adapter<BaseViewHolder<Product>>(), AutoUpdatableAdapter, BindableAdapter<Product> {
+    override fun getItemCount(): Int = items.size
+
+    override lateinit var onRecyclerListener: OnRecyclerListener
+
+    private var items: List<Product> by Delegates.observable(emptyList()) { _, oldList, newList ->
+        autoNotify(oldList, newList) { o, n -> o.id == n.id }
+    }
     override fun setData(items: List<Product>) {
-        val oldItems = values
-        values = items as ArrayList<Product>
-        autoNotify(oldItems, values) { oldItem, newItem ->
-            oldItem.id == newItem.id
-        }
+        this.items = items
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
@@ -24,7 +29,7 @@ class ShoppingListDetailAdapter : BaseAdapter<Product>() {
 
 
     override fun onBindViewHolder(holder: BaseViewHolder<Product>, position: Int) {
-        val product = values[position]
+        val product = items[position]
         holder.bind(product)
         holder.plusButton.setOnClickListener {
             product.amount += 1
@@ -37,9 +42,11 @@ class ShoppingListDetailAdapter : BaseAdapter<Product>() {
                 product.amount -= 1
                 notifyItemChanged(position)
             } else {
-                values.removeAt(position)
+                val items = this.items.toMutableList()
+                items.removeAt(position)
                 notifyItemRemoved(position)
-                notifyItemRangeChanged(position, values.size)
+                notifyItemRangeChanged(position, items.size)
+                this.items = items
             }
         }
         holder.doneCheckBox.setOnClickListener {

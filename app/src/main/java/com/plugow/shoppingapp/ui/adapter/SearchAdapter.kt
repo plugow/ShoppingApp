@@ -3,20 +3,22 @@ package com.plugow.shoppingapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.SearchItem
-import com.plugow.shoppingapp.db.model.ShoppingList
 import kotlinx.android.synthetic.main.shopping_list_item.*
 import org.jetbrains.anko.backgroundColorResource
 
 
-class SearchAdapter : BaseAdapter<SearchItem>() {
+class SearchAdapter : RecyclerView.Adapter<BaseViewHolder<SearchItem>>(), BindableAdapter<SearchItem> {
+    private var items: List<SearchItem> = emptyList()
+
+    override fun getItemCount(): Int = items.size
+
+    override lateinit var onRecyclerListener: OnRecyclerListener
+
     override fun setData(items: List<SearchItem>) {
-        val oldItems = values
-        values = items as ArrayList<SearchItem>
-        autoNotify(oldItems, values) { oldItem, newItem ->
-            oldItem.id == newItem.id
-        }
+        this.items = items
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<SearchItem> {
@@ -24,7 +26,7 @@ class SearchAdapter : BaseAdapter<SearchItem>() {
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<SearchItem>, position: Int) {
-        val shoppingList = values[position]
+        val shoppingList = items[position]
         holder.bind(shoppingList)
         holder.containerView.setOnClickListener {
             shoppingList.isChosen = !shoppingList.isChosen

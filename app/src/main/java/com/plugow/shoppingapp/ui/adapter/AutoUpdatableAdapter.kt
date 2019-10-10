@@ -3,18 +3,9 @@ package com.plugow.shoppingapp.ui.adapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
+interface AutoUpdatableAdapter {
 
-abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
-    protected var values: ArrayList<T> = arrayListOf()
-    protected lateinit var onRecyclerListener:OnRecyclerListener
-
-    abstract fun setData(items: List<T>)
-
-    fun setListener(listener: OnRecyclerListener){
-        onRecyclerListener = listener
-    }
-
-    fun autoNotify(oldList: List<T>, newList: List<T>, compare: (T, T) -> Boolean) {
+    fun <T> RecyclerView.Adapter<*>.autoNotify(oldList: List<T>, newList: List<T>, compare: (T, T) -> Boolean) {
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -32,9 +23,4 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<BaseViewHolder<T>>() {
 
         diff.dispatchUpdatesTo(this)
     }
-
-    override fun getItemCount(): Int {
-        return values.size
-    }
-
 }

@@ -5,26 +5,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.ShoppingList
 import kotlinx.android.synthetic.main.shopping_list_item.*
+import kotlin.properties.Delegates
 
 
-class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
-    override fun setData(items: List<ShoppingList>) {
-        val oldItems = values
-        values = items as ArrayList<ShoppingList>
-        autoNotify(oldItems, values) { oldItem, newItem ->
-            oldItem.id == newItem.id
-        }
+class ShoppingListAdapter : RecyclerView.Adapter<BaseViewHolder<ShoppingList>>(), AutoUpdatableAdapter, BindableAdapter<ShoppingList> {
+    override lateinit var onRecyclerListener: OnRecyclerListener
+
+    private var items: List<ShoppingList> by Delegates.observable(emptyList()) { _, oldList, newList ->
+        autoNotify(oldList, newList) { o, n -> o.id == n.id }
     }
+
+    override fun setData(items: List<ShoppingList>) {
+        this.items = items
+    }
+
+    override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ShoppingList> {
         return ShoppingListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.shopping_list_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<ShoppingList>, position: Int) {
-        val shoppingList = values[position]
+        val shoppingList = items[position]
         holder.bind(shoppingList)
         holder.containerView.setOnClickListener {
             onRecyclerListener.onClick(RecyclerClickType.MAIN, position)
@@ -33,21 +39,17 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>() {
                 val popup = PopupMenu(holder.containerView.context, holder.contextMenu, Gravity.END)
                 popup.menuInflater.inflate(R.menu.shopping_list_menu, popup.menu)
                 popup.setOnMenuItemClickListener {
+                    val items = this.items.toMutableList()
                     when(it.itemId){
                         R.id.nav_archive -> {
                             shoppingList.isArchived=true
                             onRecyclerListener.onClick(RecyclerClickType.ARCHIVE, position)
-                            values.removeAt(position)
-                            notifyItemRemoved(position)
-                            notifyItemRangeChanged(position, values.size)
                         }
                         R.id.nav_remove -> {
                             onRecyclerListener.onClick(RecyclerClickType.REMOVE, position)
-                            values.removeAt(position)
-                            notifyItemRemoved(position)
-                            notifyItemRangeChanged(position, values.size)
                         }
                     }
+                    this.items = items
                     true
                 }
                 popup.show()
