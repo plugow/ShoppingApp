@@ -5,6 +5,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.ui.adapter.BindableAdapter
+import com.plugow.shoppingapp.ui.adapter.ClickType
 import com.plugow.shoppingapp.ui.adapter.OnRecyclerListener
 
 
@@ -20,7 +21,7 @@ fun <T> setRecyclerData(recyclerView: RecyclerView, items: List<T>?) {
 
 
 @BindingAdapter("onRecyclerClick")
-fun setRecyclerListener(recyclerView: RecyclerView, onRecyclerListener: OnRecyclerListener){
+fun setRecyclerListener(recyclerView: RecyclerView, onRecyclerListener: (ClickType, Int) -> Unit){
     if (recyclerView.adapter is BindableAdapter<*>) {
         (recyclerView.adapter as BindableAdapter<*>).setListener(onRecyclerListener)
     }

@@ -26,6 +26,10 @@ class ShoppingListDetailViewModel @Inject constructor(
     val event : LiveData<Event<ShoppingListEvent>>
         get() = mEvent
 
+    var onClickListener: MutableLiveData<(ClickType, Int) -> Unit> = MutableLiveData { type, pos ->
+        onRecyclerClick(type, pos)
+    }
+
     override fun onCleared() {
         super.onCleared()
         getProductsUseCase.dispose()

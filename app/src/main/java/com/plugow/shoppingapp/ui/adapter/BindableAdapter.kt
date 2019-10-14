@@ -1,12 +1,9 @@
 package com.plugow.shoppingapp.ui.adapter
 
-interface BindableAdapter<T> {
 
-    var onRecyclerListener: OnRecyclerListener
+interface BindableAdapter<in T> {
 
     fun setData(items: List<T>)
+    fun setListener(listener: (type:ClickType, pos:Int) -> Unit)
 
-    fun setListener(listener: OnRecyclerListener) {
-        onRecyclerListener = listener
-    }
 }

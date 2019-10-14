@@ -37,7 +37,7 @@
             <androidx.recyclerview.widget.RecyclerView
                     android:background="@color/detailGrey"
                     android:clipToPadding="false"
-                    app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
+                    app:onRecyclerClick="@{viewModel.onClickListener}"
                     android:paddingTop="@dimen/base_margin"
                     android:paddingBottom="@dimen/list_bottom_padding"
                     android:id="@+id/list"

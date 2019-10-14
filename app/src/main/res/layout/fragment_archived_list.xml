@@ -19,7 +19,7 @@
             app:onRefreshListener="@{() -> viewModel.onRefreshItems()}"
             android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
-                app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}"
+                app:onRecyclerClick="@{viewModel.onClickListener}"
                 android:clipToPadding="false"
                 android:paddingTop="@dimen/base_margin"
                 android:paddingBottom="@dimen/base_margin"

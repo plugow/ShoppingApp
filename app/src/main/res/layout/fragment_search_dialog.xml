@@ -107,7 +107,7 @@
                 android:paddingBottom="@dimen/min_margin"
                 app:data="@{viewModel.items}"
                 app:layout_constraintTop_toBottomOf="@+id/barrier"
-                app:onRecyclerClick="@{(type, pos) -> viewModel.onRecyclerClick(type, pos)}" />
+                app:onRecyclerClick="@{viewModel.onClickListener}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

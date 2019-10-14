@@ -31,6 +31,10 @@ class SearchViewModel @Inject constructor(
     val event: LiveData<Event<SearchEvent>>
         get() = mEvent
 
+    var onClickListener: MutableLiveData<(ClickType, Int) -> Unit> = MutableLiveData { type, pos ->
+        onRecyclerClick(type, pos)
+    }
+
     override fun onCleared() {
         super.onCleared()
         getSearchItemsUseCase.dispose()

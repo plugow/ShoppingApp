@@ -22,6 +22,9 @@ class ArchivedListViewModel @Inject constructor(
     override var items: MutableLiveData<List<ShoppingList>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     var isAscending = false
+    var onClickListener: MutableLiveData<(ClickType, Int) -> Unit> = MutableLiveData { type, pos ->
+        onRecyclerClick(type, pos)
+    }
 
 
     override fun onRecyclerClick(type: ClickType, pos: Int) {
@@ -30,7 +33,7 @@ class ArchivedListViewModel @Inject constructor(
                 deleteListUseCase.execute(params = items.value?.get(pos))
             }
             ArchiveClickType.RESTORE -> {
-                updateListUseCase.execute(params = items.value?.get(pos))
+                updateListUseCase.execute(params = items.value?.get(pos)?.apply { isArchived=false })
             }
         }
     }

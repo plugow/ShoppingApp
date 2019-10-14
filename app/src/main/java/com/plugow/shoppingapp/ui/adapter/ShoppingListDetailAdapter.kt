@@ -3,41 +3,44 @@ package com.plugow.shoppingapp.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.Product
+import com.plugow.shoppingapp.util.BaseAdapter
 import kotlinx.android.synthetic.main.product_list_item.*
 import org.jetbrains.anko.backgroundColorResource
 import kotlin.properties.Delegates
 
 
-class ShoppingListDetailAdapter : RecyclerView.Adapter<BaseViewHolder<Product>>(), AutoUpdatableAdapter, BindableAdapter<Product> {
-    override fun getItemCount(): Int = items.size
+class ShoppingListDetailAdapter : BaseAdapter<Product>(), AutoUpdatableAdapter, BindableAdapter<Product> {
 
-    override lateinit var onRecyclerListener: OnRecyclerListener
-
+    private lateinit var onRecyclerListener: (ClickType, Int) -> Unit
     private var items: List<Product> by Delegates.observable(emptyList()) { _, oldList, newList ->
         autoNotify(oldList, newList) { o, n -> o.id == n.id }
     }
+
     override fun setData(items: List<Product>) {
         this.items = items
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Product> {
-        return ShoppingListDetailViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false))
+    override fun setListener(listener: (type: ClickType, pos: Int) -> Unit) {
+        this.onRecyclerListener = listener
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder<Product> {
+        return ShoppingListDetailHolder(LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false))
     }
 
 
-    override fun onBindViewHolder(holder: BaseViewHolder<Product>, position: Int) {
+    override fun onBindViewHolder(holder: BaseHolder<Product>, position: Int) {
         val product = items[position]
         holder.bind(product)
         holder.plusButton.setOnClickListener {
             product.amount += 1
             notifyItemChanged(position)
-            onRecyclerListener.onClick(ProductClickType.ADD, position)
+            onRecyclerListener(ProductClickType.ADD, position)
         }
         holder.minusButton.setOnClickListener {
-            onRecyclerListener.onClick(ProductClickType.SUBSTRACT, position)
+            onRecyclerListener(ProductClickType.SUBSTRACT, position)
             if (product.amount > 1){
                 product.amount -= 1
                 notifyItemChanged(position)
@@ -52,15 +55,16 @@ class ShoppingListDetailAdapter : RecyclerView.Adapter<BaseViewHolder<Product>>(
         holder.doneCheckBox.setOnClickListener {
             product.isDone = !product.isDone
             notifyItemChanged(position)
-            onRecyclerListener.onClick(ProductClickType.CHECK, position)
+            onRecyclerListener(ProductClickType.CHECK, position)
         }
     }
 
+    override fun getItemCount(): Int = items.size
 
 
-    class ShoppingListDetailViewHolder(containerView: View) : BaseViewHolder<Product>(containerView) {
+    class ShoppingListDetailHolder(containerView: View) : BaseHolder<Product>(containerView) {
 
-        override fun bind(item: Product) {
+        override fun bind(item: Product, listener: ((ClickType, Int) -> Unit)?) {
             title.text = item.name
             if (item.amount!=1){
                 amount.text = item.amount.toString()
