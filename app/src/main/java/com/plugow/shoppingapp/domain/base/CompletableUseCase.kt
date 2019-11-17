@@ -19,8 +19,11 @@ abstract class CompletableUseCase<in Params>(
      * @param onComplete [() -> Unit] completion callback from stream
      * @param params Parameters (Optional) used to build/execute this use case.
      */
-    fun execute(onError: (Throwable) -> Unit = onErrorStub,
-                onComplete: () -> Unit = onCompleteStub, params: Params? = null) {
+    fun execute(
+        onError: (Throwable) -> Unit = onErrorStub,
+        onComplete: () -> Unit = onCompleteStub,
+        params: Params? = null
+    ) {
         val completable = buildUseCaseCompletableWithSchedulers(params)
         addDisposable(completable.subscribe(onComplete, onError))
     }

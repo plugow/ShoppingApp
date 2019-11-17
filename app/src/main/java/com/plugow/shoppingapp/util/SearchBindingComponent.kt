@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -25,7 +24,7 @@ class SearchBindingComponent(val lifecycle: Lifecycle) : DataBindingComponent, L
     }
 
     @BindingAdapter("textChanged")
-    fun bindSearchBar(editText: EditText, listener: ()->Unit){
+    fun bindSearchBar(editText: EditText, listener: () -> Unit) {
         editText.afterTextChangeEvents()
             .debounce(200, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()

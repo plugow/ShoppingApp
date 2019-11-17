@@ -5,10 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "searchItems")
-data class SearchItem (
+data class SearchItem(
     @PrimaryKey(autoGenerate = true)
-    var id:Int=0,
-    var name:String="",
+    var id: Int = 0,
+    var name: String = "",
     @ColumnInfo(defaultValue = "0")
-    var isChosen:Boolean = false
+    var isChosen: Boolean = false
 )

@@ -8,26 +8,25 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 interface LocalRepository {
-    fun getSearchItems() : Single<List<SearchItem>>
+    fun getSearchItems(): Single<List<SearchItem>>
 
     fun addProducts(items: List<SearchItem>, shoppingListId: Int): Completable
 
     fun getProductsById(shoppingListId: Int): Observable<List<Product>>
 
-    fun updateProduct(product: Product):Completable
+    fun updateProduct(product: Product): Completable
 
     fun deleteProduct(product: Product): Completable
 
-    fun updateList(list: ShoppingList) : Completable
+    fun updateList(list: ShoppingList): Completable
 
-    fun deleteList(list: ShoppingList) : Completable
+    fun deleteList(list: ShoppingList): Completable
 
-    fun insertList(list: ShoppingList) : Completable
+    fun insertList(list: ShoppingList): Completable
 
-    fun getShoppingList() : Observable<List<ShoppingList>>
+    fun getShoppingList(): Observable<List<ShoppingList>>
 
-    fun getArchivedList() : Observable<List<ShoppingList>>
+    fun getArchivedList(): Observable<List<ShoppingList>>
 
-    fun getShoppingListById(shoppingListId: Int) : Single<ShoppingList>
-
+    fun getShoppingListById(shoppingListId: Int): Single<ShoppingList>
 }

@@ -19,7 +19,5 @@ class SortListUseCase @Inject constructor(schedulerProvider: SchedulerProvider) 
         }
     }
 
-
     class SortListParams(val isAscending: Boolean, val list: List<ShoppingList>)
-
 }

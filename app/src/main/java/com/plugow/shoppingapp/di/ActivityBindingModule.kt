@@ -11,9 +11,9 @@ abstract class ActivityBindingModule {
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [MainModule::class])
-    internal abstract fun mainActivity() : MainActivity
+    internal abstract fun mainActivity(): MainActivity
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = [DetailModule::class])
-    internal abstract fun shoppingDetailActivity() : ShoppingListDetailActivity
+    internal abstract fun shoppingDetailActivity(): ShoppingListDetailActivity
 }

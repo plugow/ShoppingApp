@@ -11,9 +11,9 @@ import com.plugow.shoppingapp.ui.adapter.ShoppingListDetailAdapter
 import com.plugow.shoppingapp.ui.dialog.SearchDialogFragment
 import com.plugow.shoppingapp.viewModel.ShoppingListDetailViewModel
 import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 import kotlinx.android.synthetic.main.activity_shopping_list_detail.*
 import kotlinx.android.synthetic.main.activity_shopping_list_detail.view.*
-import javax.inject.Inject
 
 class ShoppingListDetailActivity : DaggerAppCompatActivity() {
     @Inject internal lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -22,7 +22,6 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this, viewModelFactory)[ShoppingListDetailViewModel::class.java]
-
 
         val mAdapter = ShoppingListDetailAdapter()
         val id = intent.getIntExtra("id", 0)
@@ -34,7 +33,7 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
             list.layoutManager = LinearLayoutManager(this@ShoppingListDetailActivity)
             addProductButton.setOnClickListener {
                 val searchDialog = SearchDialogFragment.newInstance(id)
-                searchDialog.show(supportFragmentManager,"search dialog")
+                searchDialog.show(supportFragmentManager, "search dialog")
             }
         }
         mViewModel.initValues(id)
@@ -42,7 +41,7 @@ class ShoppingListDetailActivity : DaggerAppCompatActivity() {
         supportActionBar?.run {
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
-            title =name
+            title = name
         }
     }
 

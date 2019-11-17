@@ -5,7 +5,6 @@ import io.reactivex.subjects.PublishSubject
 class RxBus {
     private val subject = PublishSubject.create<BusEvent>()
 
-
     fun emitEvent(event: BusEvent) {
         subject.onNext(event)
     }
@@ -13,5 +12,4 @@ class RxBus {
     fun getEventObservable(): Observable<BusEvent> {
         return subject
     }
-
 }

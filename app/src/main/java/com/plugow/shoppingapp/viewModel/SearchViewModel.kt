@@ -70,7 +70,6 @@ class SearchViewModel @Inject constructor(
                 ), onComplete = {
                     mEvent.value = Event(SearchEvent.DISMISS)
                 })
-
         } else {
             mEvent.value = Event(SearchEvent.DISMISS)
         }
@@ -86,7 +85,6 @@ class SearchViewModel @Inject constructor(
                     items.value = filteredItems
                     customItemVisibility.value = it.trim() != ""
                 })
-
         }
     }
 
@@ -98,6 +96,4 @@ class SearchViewModel @Inject constructor(
             selectedItems.removeAll { it.name == searchBar.value!! }
         }
     }
-
-
 }

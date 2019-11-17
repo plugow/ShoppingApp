@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.db.model.ShoppingList
 import com.plugow.shoppingapp.domain.*
-import com.plugow.shoppingapp.util.Event
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ClickType
 import com.plugow.shoppingapp.ui.adapter.RecyclerClickType
+import com.plugow.shoppingapp.util.Event
 import javax.inject.Inject
 
 class ShoppingListViewModel @Inject constructor(
@@ -32,7 +32,6 @@ class ShoppingListViewModel @Inject constructor(
         onRecyclerClick(type, pos)
     }
 
-
     override fun loadItems() {
         getShoppingListUseCase.execute(
             onNext = {
@@ -44,7 +43,6 @@ class ShoppingListViewModel @Inject constructor(
             }
         )
     }
-
 
     override fun onCleared() {
         super.onCleared()
@@ -70,7 +68,7 @@ class ShoppingListViewModel @Inject constructor(
             }
 
             RecyclerClickType.ARCHIVE -> {
-                updateListUseCase.execute(params = items.value?.get(pos)?.apply { isArchived=true })
+                updateListUseCase.execute(params = items.value?.get(pos)?.apply { isArchived = true })
             }
         }
     }
@@ -85,6 +83,4 @@ class ShoppingListViewModel @Inject constructor(
                 })
         }
     }
-
-
 }

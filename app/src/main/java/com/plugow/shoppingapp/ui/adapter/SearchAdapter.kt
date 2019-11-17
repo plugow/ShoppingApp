@@ -9,7 +9,6 @@ import com.plugow.shoppingapp.util.BaseAdapter
 import kotlinx.android.synthetic.main.shopping_list_item.*
 import org.jetbrains.anko.backgroundColorResource
 
-
 class SearchAdapter : BaseAdapter<SearchItem>(), BindableAdapter<SearchItem> {
 
     private var items: List<SearchItem> = emptyList()
@@ -32,7 +31,7 @@ class SearchAdapter : BaseAdapter<SearchItem>(), BindableAdapter<SearchItem> {
         holder.bind(shoppingList, onRecyclerListener)
         holder.containerView.setOnClickListener {
             shoppingList.isChosen = !shoppingList.isChosen
-            if (shoppingList.isChosen){
+            if (shoppingList.isChosen) {
                 onRecyclerListener(SearchClickType.ADD, position)
             } else {
                 onRecyclerListener(SearchClickType.REMOVE, position)
@@ -46,12 +45,11 @@ class SearchAdapter : BaseAdapter<SearchItem>(), BindableAdapter<SearchItem> {
     class SearchHolder(containerView: View) : BaseHolder<SearchItem>(containerView) {
         override fun bind(item: SearchItem, listener: ((ClickType, Int) -> Unit)?) {
             title.text = item.name
-            if (item.isChosen){
+            if (item.isChosen) {
                 containerView.backgroundColorResource = R.color.lightAccent
             } else {
                 containerView.backgroundColorResource = R.color.white
             }
         }
     }
-
 }

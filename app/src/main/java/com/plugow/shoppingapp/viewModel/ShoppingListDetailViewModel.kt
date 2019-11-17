@@ -18,12 +18,12 @@ class ShoppingListDetailViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
     private val updateProductUseCase: UpdateProductUseCase
-): ViewModel(), RefreshableList<Product> {
+) : ViewModel(), RefreshableList<Product> {
     override var items: MutableLiveData<List<Product>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
     private var shoppingListId = 0
-    private val mEvent:MutableLiveData<Event<ShoppingListEvent>> = MutableLiveData()
-    val event : LiveData<Event<ShoppingListEvent>>
+    private val mEvent: MutableLiveData<Event<ShoppingListEvent>> = MutableLiveData()
+    val event: LiveData<Event<ShoppingListEvent>>
         get() = mEvent
 
     var onClickListener: MutableLiveData<(ClickType, Int) -> Unit> = MutableLiveData { type, pos ->
@@ -40,20 +40,20 @@ class ShoppingListDetailViewModel @Inject constructor(
     override fun loadItems() {
         getProductsUseCase.execute(params = shoppingListId, onNext = {
             items.value = it
-            isLoadingRefresh.value=false
+            isLoadingRefresh.value = false
         })
     }
 
-    override fun initValues(id:Int){
+    override fun initValues(id: Int) {
         shoppingListId = id
         super.initValues(id)
     }
 
-    override fun onRecyclerClick(type:ClickType, pos:Int){
-        when(type){
+    override fun onRecyclerClick(type: ClickType, pos: Int) {
+        when (type) {
             ProductClickType.ADD -> updateProductUseCase.execute(params = items.value?.get(pos))
             ProductClickType.SUBSTRACT -> {
-                if (items.value?.get(pos)?.amount!! == 1){
+                if (items.value?.get(pos)?.amount!! == 1) {
                     deleteProductUseCase.execute(params = items.value?.get(pos))
                 } else {
                     updateProductUseCase.execute(params = items.value?.get(pos))
@@ -62,5 +62,4 @@ class ShoppingListDetailViewModel @Inject constructor(
             ProductClickType.CHECK -> updateProductUseCase.execute(params = items.value?.get(pos))
         }
     }
-
 }

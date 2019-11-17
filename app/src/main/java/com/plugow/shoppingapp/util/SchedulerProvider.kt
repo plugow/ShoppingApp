@@ -7,10 +7,9 @@ import io.reactivex.schedulers.TestScheduler
 import javax.inject.Inject
 
 interface SchedulerProvider {
-    fun uiScheduler() : Scheduler
-    fun ioScheduler() : Scheduler
+    fun uiScheduler(): Scheduler
+    fun ioScheduler(): Scheduler
 }
-
 
 class AppSchedulerProvider @Inject constructor() : SchedulerProvider {
     override fun ioScheduler() = Schedulers.io()

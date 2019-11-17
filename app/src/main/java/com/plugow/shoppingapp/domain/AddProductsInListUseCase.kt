@@ -17,6 +17,5 @@ class AddProductsInListUseCase @Inject constructor(
         return localRepository.addProducts(params.products, params.shoppingListId)
     }
 
-
-    class AddProductsInListParam(val products:List<SearchItem>, val shoppingListId:Int)
+    class AddProductsInListParam(val products: List<SearchItem>, val shoppingListId: Int)
 }

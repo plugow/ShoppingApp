@@ -13,17 +13,17 @@ object DbModule {
 
     @Provides
     @JvmStatic
-    fun provideDb(context:Context) : AppDB = AppDB.getInstance(context)
+    fun provideDb(context: Context): AppDB = AppDB.getInstance(context)
 
     @Provides
     @JvmStatic
-    fun provideProductDao(appDB: AppDB):ProductDao = appDB.productDao()
+    fun provideProductDao(appDB: AppDB): ProductDao = appDB.productDao()
 
     @Provides
     @JvmStatic
-    fun provideListDao(appDB: AppDB):ShoppingListDao = appDB.listDao()
+    fun provideListDao(appDB: AppDB): ShoppingListDao = appDB.listDao()
 
     @Provides
     @JvmStatic
-    fun provideItemDao(appDB: AppDB):SearchItemDao = appDB.itemsDao()
+    fun provideItemDao(appDB: AppDB): SearchItemDao = appDB.itemsDao()
 }

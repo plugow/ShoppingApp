@@ -7,8 +7,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.startActivity
 import java.util.concurrent.TimeUnit
+import org.jetbrains.anko.startActivity
 
 class SplashActivity : Activity() {
     private lateinit var disposable: Disposable
@@ -19,11 +19,10 @@ class SplashActivity : Activity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onSuccess = {startActivity<MainActivity>()},
-                        onError = {startActivity<MainActivity>()}
+                        onSuccess = { startActivity<MainActivity>() },
+                        onError = { startActivity<MainActivity>() }
                 )
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

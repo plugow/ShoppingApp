@@ -15,7 +15,6 @@ import com.plugow.shoppingapp.db.model.SearchItem
 import com.plugow.shoppingapp.db.model.ShoppingList
 import java.util.concurrent.Executors
 
-
 @Database(version = 1, entities = [Product::class, SearchItem::class, ShoppingList::class])
 @TypeConverters(Converters::class)
 abstract class AppDB : RoomDatabase() {
@@ -45,7 +44,7 @@ abstract class AppDB : RoomDatabase() {
         }
     }
 
-    //TODO do better implementataion
+    // TODO do better implementataion
     fun insertFromFile(context: Context, db: SupportSQLiteDatabase) {
         Executors.newSingleThreadExecutor().execute {
             if (itemsDao().count() == 0) {
@@ -55,6 +54,4 @@ abstract class AppDB : RoomDatabase() {
             }
         }
     }
-
-
 }

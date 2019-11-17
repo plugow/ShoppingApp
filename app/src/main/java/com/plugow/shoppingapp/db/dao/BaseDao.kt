@@ -7,14 +7,14 @@ import io.reactivex.Completable
 
 interface BaseDao<T> {
     @Insert
-    fun insert(vararg t:T): Completable
+    fun insert(vararg t: T): Completable
 
     @Insert
-    fun bulbInsert(list:List<T>):Completable
+    fun bulbInsert(list: List<T>): Completable
 
     @Update
-    fun update(vararg t:T): Completable
+    fun update(vararg t: T): Completable
 
     @Delete
-    fun delete(vararg t:T): Completable
+    fun delete(vararg t: T): Completable
 }

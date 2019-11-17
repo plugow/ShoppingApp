@@ -1,14 +1,13 @@
 package com.plugow.shoppingapp.ui.activity
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.ui.fragment.ArchivedListFragment
 import com.plugow.shoppingapp.ui.fragment.ShoppingListFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : DaggerAppCompatActivity() {
 

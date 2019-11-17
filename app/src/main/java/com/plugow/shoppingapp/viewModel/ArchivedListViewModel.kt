@@ -10,7 +10,6 @@ import com.plugow.shoppingapp.domain.UpdateListUseCase
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ArchiveClickType
 import com.plugow.shoppingapp.ui.adapter.ClickType
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class ArchivedListViewModel @Inject constructor(
@@ -26,14 +25,13 @@ class ArchivedListViewModel @Inject constructor(
         onRecyclerClick(type, pos)
     }
 
-
     override fun onRecyclerClick(type: ClickType, pos: Int) {
         when (type) {
             ArchiveClickType.REMOVE -> {
                 deleteListUseCase.execute(params = items.value?.get(pos))
             }
             ArchiveClickType.RESTORE -> {
-                updateListUseCase.execute(params = items.value?.get(pos)?.apply { isArchived=false })
+                updateListUseCase.execute(params = items.value?.get(pos)?.apply { isArchived = false })
             }
         }
     }
@@ -55,7 +53,6 @@ class ArchivedListViewModel @Inject constructor(
         getArchivedListUseCase.dispose()
     }
 
-
     fun sort() {
         items.value?.let { items ->
             isAscending = !isAscending
@@ -66,5 +63,4 @@ class ArchivedListViewModel @Inject constructor(
                 })
         }
     }
-
 }

@@ -14,5 +14,4 @@ class GetSearchItemsUseCase @Inject constructor(
     override fun buildUseCaseSingle(params: Unit?): Single<List<SearchItem>> {
         return localRepository.getSearchItems()
     }
-
 }

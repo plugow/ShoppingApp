@@ -6,7 +6,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.exceptions.OnErrorNotImplementedException
 import io.reactivex.plugins.RxJavaPlugins
 
-abstract class BaseReactiveUseCase (protected val schedulerProvider: SchedulerProvider) {
+abstract class BaseReactiveUseCase(protected val schedulerProvider: SchedulerProvider) {
     /**
      * Default values for observable callbacks
      */

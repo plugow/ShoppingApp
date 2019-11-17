@@ -66,12 +66,10 @@ class LocalRepositoryImpl @Inject constructor(
             }
             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-
     override fun getShoppingListById(shoppingListId: Int) =
         listDao.getListById(shoppingListId)
             .map { fillShoppingList(it) }
             .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
-
 
     private fun fillShoppingList(shoppingListWithProducts: ShoppingListWithProducts): ShoppingList {
         shoppingListWithProducts.shoppingList?.productsAmount =
@@ -80,6 +78,4 @@ class LocalRepositoryImpl @Inject constructor(
             shoppingListWithProducts.products.filter { it.isDone }.size
         return shoppingListWithProducts.shoppingList!!
     }
-
-
 }

@@ -3,7 +3,7 @@ package com.plugow.shoppingapp.domain.base
 import com.plugow.shoppingapp.util.SchedulerProvider
 import io.reactivex.Observable
 
-abstract class ObservableUseCase<Results:Any, in Params>(schedulerProvider: SchedulerProvider) :
+abstract class ObservableUseCase<Results : Any, in Params>(schedulerProvider: SchedulerProvider) :
     BaseReactiveUseCase(schedulerProvider) {
 
     /**
@@ -22,7 +22,8 @@ abstract class ObservableUseCase<Results:Any, in Params>(schedulerProvider: Sche
     fun execute(
         onError: (Throwable) -> Unit = onErrorStub,
         onComplete: () -> Unit = onCompleteStub,
-        onNext: (Results) -> Unit = onNextStub, params: Params? = null
+        onNext: (Results) -> Unit = onNextStub,
+        params: Params? = null
     ) {
         val observable = buildUseCaseObservableWithSchedulers(params)
         addDisposable(observable.subscribe(onNext, onError, onComplete))

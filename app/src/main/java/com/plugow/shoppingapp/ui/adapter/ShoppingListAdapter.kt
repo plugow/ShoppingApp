@@ -7,24 +7,19 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.ShoppingList
-import com.plugow.shoppingapp.util.BaseAdapter
 import kotlinx.android.synthetic.main.shopping_list_item.*
 import kotlin.properties.Delegates
 
-class ShoppingListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter, BindableAdapter<ShoppingList> {
+class ShoppingListAdapter(b: BindableAdapter) : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter, BindableAdapter by b {
 
-    private lateinit var onRecyclerListener: (ClickType, Int) -> Unit
-    private var items: List<ShoppingList> by Delegates.observable(emptyList()) { _, oldList, newList ->
+//    private lateinit var onRecyclerListener: (ClickType, Int) -> Unit
+    override var items: List<ShoppingList> by Delegates.observable(emptyList()) { _, oldList, newList ->
         autoNotify(oldList, newList) { o, n -> o.id == n.id }
     }
 
-    override fun setData(items: List<ShoppingList>) {
-        this.items = items
-    }
-
-    override fun setListener(listener: (type: ClickType, pos: Int) -> Unit) {
-        this.onRecyclerListener = listener
-    }
+//    override fun setListener(listener: (type: ClickType, pos: Int) -> Unit) {
+//        this.onRecyclerListener = listener
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder<ShoppingList> {
         return ShoppingListHolder(LayoutInflater.from(parent.context).inflate(R.layout.shopping_list_item, parent, false))
@@ -32,7 +27,7 @@ class ShoppingListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter, B
 
     override fun onBindViewHolder(holder: BaseHolder<ShoppingList>, position: Int) {
         val shoppingList = items[position]
-        holder.bind(shoppingList, onRecyclerListener)
+        holder.bind(shoppingList)
     }
 
     override fun getItemCount(): Int = items.size

@@ -8,9 +8,8 @@ import androidx.appcompat.widget.PopupMenu
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.ShoppingList
 import com.plugow.shoppingapp.util.BaseAdapter
-import kotlinx.android.synthetic.main.archived_list_item.*
 import kotlin.properties.Delegates
-
+import kotlinx.android.synthetic.main.archived_list_item.*
 
 class ArchivedListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter,
     BindableAdapter<ShoppingList> {
@@ -82,5 +81,4 @@ class ArchivedListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter,
             }
         }
     }
-
 }

@@ -20,7 +20,6 @@ class ArchivedListFragment : DaggerFragment() {
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: ArchivedListViewModel
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
@@ -28,11 +27,14 @@ class ArchivedListFragment : DaggerFragment() {
         } ?: throw Exception("Invalid Activity")
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        val mAdapter= ArchivedListAdapter()
-        val binding = DataBindingUtil.inflate<FragmentArchivedListBinding>(inflater, R.layout.fragment_archived_list, container, false ).apply {
+        val mAdapter = ArchivedListAdapter()
+        val binding = DataBindingUtil.inflate<FragmentArchivedListBinding>(inflater, R.layout.fragment_archived_list, container, false).apply {
             lifecycleOwner = this@ArchivedListFragment
             viewModel = mViewModel
             list.adapter = mAdapter
@@ -44,12 +46,9 @@ class ArchivedListFragment : DaggerFragment() {
         return binding.root
     }
 
-
-
     companion object {
         @JvmStatic
         fun newInstance() =
                 ArchivedListFragment()
     }
-
 }

@@ -18,6 +18,5 @@ class FilterSearchItemsUseCase @Inject constructor(schedulerProvider: SchedulerP
             .toList()
     }
 
-
     class FilterSearchItemsParam(val text: String, val items: List<SearchItem>)
 }

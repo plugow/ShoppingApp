@@ -18,10 +18,10 @@ abstract class AppModule {
     abstract fun bindContext(application: Application): Context
 
     @Binds
-    abstract fun appSchedulerProvider(schedulerProvider: AppSchedulerProvider) : SchedulerProvider
+    abstract fun appSchedulerProvider(schedulerProvider: AppSchedulerProvider): SchedulerProvider
 
     @Binds
-    abstract fun localRepository(localRepositoryImpl: LocalRepositoryImpl) : LocalRepository
+    abstract fun localRepository(localRepositoryImpl: LocalRepositoryImpl): LocalRepository
 
     @Module
     companion object {
@@ -29,9 +29,8 @@ abstract class AppModule {
         @Provides
         @JvmStatic
         @Singleton
-        fun provideBus() : RxBus{
+        fun provideBus(): RxBus {
             return RxBus()
         }
-
     }
 }

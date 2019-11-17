@@ -3,7 +3,7 @@ package com.plugow.shoppingapp.domain.base
 import com.plugow.shoppingapp.util.SchedulerProvider
 import io.reactivex.Single
 
-abstract class SingleUseCase<Results:Any, in Params>(
+abstract class SingleUseCase<Results : Any, in Params>(
     schedulerProvider: SchedulerProvider
 ) : BaseReactiveUseCase(schedulerProvider) {
 
@@ -19,8 +19,11 @@ abstract class SingleUseCase<Results:Any, in Params>(
      * @param onSuccess [(Results) -> Unit] completion callback from stream
      * @param params Parameters (Optional) used to build/execute this use case.
      */
-    fun execute(onError: (Throwable) -> Unit = onErrorStub,
-                onSuccess: (Results) -> Unit = onNextStub, params: Params? = null) {
+    fun execute(
+        onError: (Throwable) -> Unit = onErrorStub,
+        onSuccess: (Results) -> Unit = onNextStub,
+        params: Params? = null
+    ) {
         val single = buildUseCaseSingleWithSchedulers(params)
         addDisposable(single.subscribe(onSuccess, onError))
     }

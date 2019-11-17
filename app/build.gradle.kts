@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
+    id("org.jlleitschuh.gradle.ktlint") version "9.1.1"
 }
 
 android {
@@ -34,7 +35,6 @@ android {
         isEnabled = true
     }
 }
-
 
 androidExtensions {
     isExperimental = true
@@ -73,7 +73,7 @@ dependencies {
     androidTestImplementation("androidx.test:rules:1.1.1")
     implementation("androidx.cardview:cardview:1.0.0")
 
-    //mockito
+    // mockito
     testImplementation("org.mockito:mockito-core:${Versions.mockito_version}")
     testImplementation("org.mockito:mockito-inline:${Versions.mockito_version}")
     androidTestImplementation("org.mockito:mockito-android:${Versions.mockito_version}")
@@ -81,20 +81,20 @@ dependencies {
     androidTestImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.kotlin_mockito_version}")
     androidTestImplementation("io.mockk:mockk-android:${Versions.mockk_version}")
 
-    //dagger
+    // dagger
     implementation("com.google.dagger:dagger-android:${Versions.dagger_version}")
     implementation("com.google.dagger:dagger-android-support:${Versions.dagger_version}")
     kapt("com.google.dagger:dagger-android-processor:${Versions.dagger_version}")
     implementation("com.google.dagger:dagger:${Versions.dagger_version}")
     kapt("com.google.dagger:dagger-compiler:${Versions.dagger_version}")
 
-    //rxjava
+    // rxjava
     implementation("io.reactivex.rxjava2:rxandroid:${Versions.rxandroid_version}")
     implementation("io.reactivex.rxjava2:rxjava:${Versions.rxjava_version}")
     implementation("io.reactivex.rxjava2:rxkotlin:${Versions.rxkotlin_version}")
     implementation("com.jakewharton.rxbinding3:rxbinding:${Versions.rxbindings_version}")
 
-    //anko
+    // anko
     implementation("org.jetbrains.anko:anko:${Versions.anko_version}")
     implementation("org.jetbrains.anko:anko-design:${Versions.anko_version}")
 
@@ -104,9 +104,8 @@ dependencies {
     testImplementation("android.arch.core:core-testing:${Versions.android_binding}")
     androidTestImplementation("android.arch.core:core-testing:${Versions.android_binding}")
 
-    //room
+    // room
     implementation("androidx.room:room-runtime:${Versions.room_version}")
     implementation("androidx.room:room-rxjava2:${Versions.room_version}")
     kapt("androidx.room:room-compiler:${Versions.room_version}")
-
 }

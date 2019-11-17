@@ -10,9 +10,9 @@ import dagger.android.ContributesAndroidInjector
 abstract class MainModule {
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun shoppingListFragment() : ShoppingListFragment
+    abstract fun shoppingListFragment(): ShoppingListFragment
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun archivedListFragment() : ArchivedListFragment
+    abstract fun archivedListFragment(): ArchivedListFragment
 }

@@ -10,18 +10,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.databinding.FragmentSearchDialogBinding
-import com.plugow.shoppingapp.ui.adapter.SearchAdapter
-import dagger.android.support.DaggerAppCompatDialogFragment
-import org.jetbrains.anko.backgroundColor
-import javax.inject.Inject
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.plugow.shoppingapp.event.SearchEvent
+import com.plugow.shoppingapp.ui.adapter.SearchAdapter
 import com.plugow.shoppingapp.util.SearchBindingComponent
 import com.plugow.shoppingapp.viewModel.SearchViewModel
-
+import dagger.android.support.DaggerAppCompatDialogFragment
+import javax.inject.Inject
+import org.jetbrains.anko.backgroundColor
 
 class SearchDialogFragment : DaggerAppCompatDialogFragment() {
     @Inject
@@ -33,7 +32,6 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
             arguments = Bundle().apply { putInt("id", shoppingListId) }
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +68,6 @@ class SearchDialogFragment : DaggerAppCompatDialogFragment() {
                 }
             }
         })
-
 
         return binding.root
     }
