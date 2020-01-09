@@ -5,25 +5,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.SearchItem
-import com.plugow.shoppingapp.util.BaseAdapter
 import kotlinx.android.synthetic.main.shopping_list_item.*
 import org.jetbrains.anko.backgroundColorResource
+import kotlin.properties.Delegates
 
-class SearchAdapter : BaseAdapter<SearchItem>(), BindableAdapter<SearchItem> {
+class SearchAdapter : BaseAdapter<SearchItem>() {
 
-    private var items: List<SearchItem> = emptyList()
-    private lateinit var onRecyclerListener: (ClickType, Int) -> Unit
-
-    override fun setData(items: List<SearchItem>) {
-        this.items = items
-    }
-
-    override fun setListener(listener: (type: ClickType, pos: Int) -> Unit) {
-        this.onRecyclerListener = listener
+    override var items: List<SearchItem> by Delegates.observable(emptyList()) { _, _, _ ->
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder<SearchItem> {
-        return SearchHolder(LayoutInflater.from(parent.context).inflate(R.layout.search_list_item, parent, false))
+        return SearchHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.search_list_item,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: BaseHolder<SearchItem>, position: Int) {
@@ -32,15 +31,13 @@ class SearchAdapter : BaseAdapter<SearchItem>(), BindableAdapter<SearchItem> {
         holder.containerView.setOnClickListener {
             shoppingList.isChosen = !shoppingList.isChosen
             if (shoppingList.isChosen) {
-                onRecyclerListener(SearchClickType.ADD, position)
+                onRecyclerListener?.invoke(SearchClickType.ADD, position)
             } else {
-                onRecyclerListener(SearchClickType.REMOVE, position)
+                onRecyclerListener?.invoke(SearchClickType.REMOVE, position)
             }
             notifyItemChanged(position)
         }
     }
-
-    override fun getItemCount(): Int = items.size
 
     class SearchHolder(containerView: View) : BaseHolder<SearchItem>(containerView) {
         override fun bind(item: SearchItem, listener: ((ClickType, Int) -> Unit)?) {

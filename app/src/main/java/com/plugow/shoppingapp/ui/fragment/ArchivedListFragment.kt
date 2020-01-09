@@ -17,7 +17,8 @@ import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class ArchivedListFragment : DaggerFragment() {
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: ArchivedListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,12 @@ class ArchivedListFragment : DaggerFragment() {
     ): View? {
 
         val mAdapter = ArchivedListAdapter()
-        val binding = DataBindingUtil.inflate<FragmentArchivedListBinding>(inflater, R.layout.fragment_archived_list, container, false).apply {
+        val binding = DataBindingUtil.inflate<FragmentArchivedListBinding>(
+            inflater,
+            R.layout.fragment_archived_list,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@ArchivedListFragment
             viewModel = mViewModel
             list.adapter = mAdapter
@@ -49,6 +55,6 @@ class ArchivedListFragment : DaggerFragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-                ArchivedListFragment()
+            ArchivedListFragment()
     }
 }

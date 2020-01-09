@@ -1,9 +1,52 @@
 package com.plugow.shoppingapp
 
-import com.raizlabs.android.dbflow.sql.language.Operator
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import org.junit.Test
 
 class MyTestsKotlin {
+
+    @Test
+    fun `check doOnSubscribe invoke thread`() {
+        Observable.fromCallable {
+            34556
+        }
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe {
+                Observable.fromCallable {
+                    128
+                }
+                    .doOnSubscribe {
+                        println("doOnsubscribe            ${Thread.currentThread().name}")
+                    }
+                    .doFinally {
+                        println("do finaly                    ${Thread.currentThread().name}")
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        val a = 4
+                    }
+            }
+
+    }
+
+    @Test
+    fun testSubjecta() {
+        val s = BehaviorSubject.createDefault("default")
+        s.subscribe {
+            val a=it
+        }
+
+        s.onNext("Dupa")
+
+        s.subscribe {
+            val a = it
+        }
+    }
+
     @Test
     fun test(){
         val a = "coś gługiepo"

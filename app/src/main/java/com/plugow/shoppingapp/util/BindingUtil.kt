@@ -4,23 +4,23 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.plugow.shoppingapp.R
-import com.plugow.shoppingapp.ui.adapter.BindableAdapter
+import com.plugow.shoppingapp.ui.adapter.BaseAdapter
 import com.plugow.shoppingapp.ui.adapter.ClickType
 
 @Suppress("UNCHECKED_CAST")
 @BindingAdapter("data")
 fun <T> setRecyclerData(recyclerView: RecyclerView, items: List<T>?) {
-    if (recyclerView.adapter is BindableAdapter<*>) {
+    if (recyclerView.adapter is BaseAdapter<*>) {
         items?.let {
-            (recyclerView.adapter as BindableAdapter<T>).setData(it)
+            (recyclerView.adapter as BaseAdapter<T>).setData(it)
         }
     }
 }
 
 @BindingAdapter("onRecyclerClick")
 fun setRecyclerListener(recyclerView: RecyclerView, onRecyclerListener: (ClickType, Int) -> Unit) {
-    if (recyclerView.adapter is BindableAdapter<*>) {
-        (recyclerView.adapter as BindableAdapter<*>).setListener(onRecyclerListener)
+    if (recyclerView.adapter is BaseAdapter<*>) {
+        (recyclerView.adapter as BaseAdapter<*>).setListener(onRecyclerListener)
     }
 }
 

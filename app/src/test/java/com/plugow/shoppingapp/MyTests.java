@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class MyTests {
 
+
     @Test
     public void test(){
         String a = "cos głupiego";

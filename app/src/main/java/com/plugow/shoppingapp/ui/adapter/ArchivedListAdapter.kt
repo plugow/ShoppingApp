@@ -7,23 +7,13 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import com.plugow.shoppingapp.R
 import com.plugow.shoppingapp.db.model.ShoppingList
-import com.plugow.shoppingapp.util.BaseAdapter
 import kotlin.properties.Delegates
 import kotlinx.android.synthetic.main.archived_list_item.*
 
-class ArchivedListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter,
-    BindableAdapter<ShoppingList> {
-    private lateinit var onRecyclerListener: (ClickType, Int) -> Unit
-    private var items: List<ShoppingList> by Delegates.observable(emptyList()) { _, oldList, newList ->
+class ArchivedListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter {
+
+    override var items: List<ShoppingList> by Delegates.observable(emptyList()) { _, oldList, newList ->
         autoNotify(oldList, newList) { o, n -> o.id == n.id }
-    }
-
-    override fun setData(items: List<ShoppingList>) {
-        this.items = items
-    }
-
-    override fun setListener(listener: (type: ClickType, pos: Int) -> Unit) {
-        this.onRecyclerListener = listener
     }
 
     override fun onCreateViewHolder(
@@ -43,8 +33,6 @@ class ArchivedListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter,
         val shoppingList = items[position]
         holder.bind(shoppingList, onRecyclerListener)
     }
-
-    override fun getItemCount(): Int = items.size
 
     class ArchivedListHolder(containerView: View) :
         BaseHolder<ShoppingList>(containerView) {
@@ -70,7 +58,7 @@ class ArchivedListAdapter : BaseAdapter<ShoppingList>(), AutoUpdatableAdapter,
                             R.id.nav_restore -> {
                                 listener?.invoke(ArchiveClickType.RESTORE, adapterPosition)
                             }
-                            R.id.nav_remove -> {
+                            R.id.nav_remove  -> {
                                 listener?.invoke(ArchiveClickType.REMOVE, adapterPosition)
                             }
                         }
