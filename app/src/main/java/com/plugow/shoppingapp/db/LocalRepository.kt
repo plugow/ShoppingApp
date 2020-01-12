@@ -29,4 +29,8 @@ interface LocalRepository {
     fun getArchivedList(): Observable<List<ShoppingList>>
 
     fun getShoppingListById(shoppingListId: Int): Single<ShoppingList>
+
+    fun increaseProductAmount(productId: Int): Completable
+
+    fun decreaseProductAmount(productId: Int): Completable
 }

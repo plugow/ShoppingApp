@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.plugow.shoppingapp.db.model.Product
-import com.plugow.shoppingapp.domain.DeleteProductUseCase
-import com.plugow.shoppingapp.domain.GetProductsUseCase
-import com.plugow.shoppingapp.domain.UpdateProductUseCase
+import com.plugow.shoppingapp.domain.*
 import com.plugow.shoppingapp.event.ShoppingListEvent
 import com.plugow.shoppingapp.trait.RefreshableList
 import com.plugow.shoppingapp.ui.adapter.ClickType
@@ -17,7 +15,9 @@ import javax.inject.Inject
 class ShoppingListDetailViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val deleteProductUseCase: DeleteProductUseCase,
-    private val updateProductUseCase: UpdateProductUseCase
+    private val updateProductUseCase: UpdateProductUseCase,
+    private val addProductAmountUseCase: AddProductAmountUseCase,
+    private val subtractProductAmountUseCase: SubtractProductAmountUseCase
 ) : ViewModel(), RefreshableList<Product> {
     override var items: MutableLiveData<List<Product>> = MutableLiveData()
     override var isLoadingRefresh: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -35,6 +35,8 @@ class ShoppingListDetailViewModel @Inject constructor(
         getProductsUseCase.dispose()
         deleteProductUseCase.dispose()
         updateProductUseCase.dispose()
+        addProductAmountUseCase.dispose()
+        subtractProductAmountUseCase.dispose()
     }
 
     override fun loadItems() {
@@ -51,12 +53,14 @@ class ShoppingListDetailViewModel @Inject constructor(
 
     override fun onRecyclerClick(type: ClickType, pos: Int) {
         when (type) {
-            ProductClickType.ADD -> updateProductUseCase.execute(params = items.value?.get(pos))
+            ProductClickType.ADD -> {
+                addProductAmountUseCase.execute(params = ProductId(items.value?.get(pos)?.id))
+            }
             ProductClickType.SUBSTRACT -> {
                 if (items.value?.get(pos)?.amount!! == 1) {
                     deleteProductUseCase.execute(params = items.value?.get(pos))
                 } else {
-                    updateProductUseCase.execute(params = items.value?.get(pos))
+                    subtractProductAmountUseCase.execute(params = ProductId(items.value?.get(pos)?.id))
                 }
             }
             ProductClickType.CHECK -> updateProductUseCase.execute(params = items.value?.get(pos))

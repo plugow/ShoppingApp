@@ -71,6 +71,14 @@ class LocalRepositoryImpl @Inject constructor(
             .map { fillShoppingList(it) }
             .subscribeOn(Schedulers.io()).observeOn(Schedulers.io())
 
+    override fun increaseProductAmount(productId: Int): Completable =
+        productsDao.increaseProductAmount(productId)
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+    override fun decreaseProductAmount(productId: Int): Completable =
+        productsDao.decreaseProductAmount(productId)
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
     private fun fillShoppingList(shoppingListWithProducts: ShoppingListWithProducts): ShoppingList {
         shoppingListWithProducts.shoppingList?.productsAmount =
             shoppingListWithProducts.products.size
